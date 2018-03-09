@@ -1,11 +1,27 @@
 language: java
 
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -f $HOME/.gradle/user-id.txt.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -fr $HOME/.gradle/caches/*/scripts/
+  - rm -fr $HOME/.gradle/caches/*/scripts-remapped/
+  - rm -fr $HOME/.gradle/caches/*/fileHashes/
+  - rm -fr $HOME/.gradle/jars*
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.m2/repository/
+
+jdk:
+  - oraclejdk8
+
 notifications:
   email:
     on_success: never # default: change
     on_failure: always # default: always
 
-after_succes:
   deploy:
     provider: heroku
     api_key:
