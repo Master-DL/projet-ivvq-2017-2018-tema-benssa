@@ -11,3 +11,6 @@ after_succes:
     api_key:
       secure: "$HEROKU_API_KEY"
     app: tema-bensa
+
+after_failure:
+  "$TRAVIS_TEST_RESULT"
