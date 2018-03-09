@@ -8,6 +8,9 @@ notifications:
     on_success: never # default: change
     on_failure: always # default: always
 
+install:
+  gradle assemble
+
 script:
 -  ./gradlew --no-daemon check 
 
