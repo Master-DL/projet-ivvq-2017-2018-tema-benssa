@@ -12,7 +12,7 @@ install:
   gradle assemble
 
 script:
--  ./gradlew --no-daemon check 
+  ./gradlew --no-daemon check
 
   deploy:
     provider: heroku
