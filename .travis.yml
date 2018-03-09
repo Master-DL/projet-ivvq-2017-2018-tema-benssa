@@ -23,7 +23,7 @@ notifications:
     on_failure: always # default: always
 
 script:
-- if [ "$TYPE" = "gradle" ]; then ./gradlew --no-daemon check ; fi
+-  ./gradlew --no-daemon check 
 
   deploy:
     provider: heroku
