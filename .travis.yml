@@ -5,6 +5,10 @@ notifications:
     on_success: never # default: change
     on_failure: always # default: always
 
+
+script:
+- if [ "$TYPE" = "gradle" ]; then ./gradlew --no-daemon check ; fi
+
 after_succes:
   deploy:
     provider: heroku
