@@ -11,14 +11,8 @@ notifications:
 install:
   gradle assemble
 
-script:
-  ./gradlew --no-daemon check
-
   deploy:
     provider: heroku
     api_key:
       secure: "$HEROKU_API_KEY"
     app: tema-bensa
-
-after_failure:
-  "$TRAVIS_TEST_RESULT"
