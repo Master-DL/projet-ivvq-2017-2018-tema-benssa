@@ -7,7 +7,7 @@ notifications:
 
 
 script:
-- if [ "$TYPE" = "gradle" ]; then ./gradlew --no-daemon check ; fi
+-  ./gradlew --no-daemon check 
 
 after_succes:
   deploy:
