@@ -1,6 +1,6 @@
 <h1><b> screeNerd </b></h1>
 
-<center><b>![](logo.png)</b><center>
+![Alt text](logo.png)
 
 Notre idée de projet est un réseau social de partage de captures d’écrans (screenshots) dédié à l’univers vidéo-ludique. Les joueurs du monde entier pourront ainsi partager leurs plus belles captures dans un ensemble de catégories, dont une générale englobant tout le contenu.
 
