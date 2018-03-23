@@ -11,3 +11,12 @@ L’objectif du site est uniquement de partager des images de jeux, et n’a pas
 
 L’application peut se voir comme un Pinterest-like dédié à l’univers vidéo-ludique.
 
+Définition de prêt : 
+  - le démarrage d'une story n'est pas génée par une story non terminée (selon la définition de fini)
+  - les tests d'acceptation ont été écrits et validés par les membres du groupe
+
+Définition de fini : 
+  - les tests d'acceptation sont passés
+  - 0 bugs et 0 vulnérabilités sur SonarQube
+  - les tests d'intégration sont tous acceptées
+  - les tests unitaires sont tous acceptés
