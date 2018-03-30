@@ -14,5 +14,5 @@ script:
 deploy:
   provider: heroku
   api_key:
-      secure: "HEROKU_API_KEY"
+      secure: "2c97166d-4beb-4bf2-917b-d58bdc2c41de"
   app: tema-bensa
