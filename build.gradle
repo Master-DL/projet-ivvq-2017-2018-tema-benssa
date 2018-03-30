@@ -42,6 +42,5 @@ sonarqube {
     properties {
         property "sonar.projectName", "Screenerd"
         property "sonar.projectKey", "com.screenerd-travis-project"
-        property "sonar.jacoco.reportPaths", "${jacoco.destinationFile}"
     }
 }
