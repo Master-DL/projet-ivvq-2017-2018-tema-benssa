@@ -12,7 +12,7 @@ buildscript {
 
 plugins {
     id "net.saliman.cobertura" version "2.5.4"
-    id "org.sonarqube" version "2.2"
+    id "org.sonarqube" version "2.6.2"
 }
 
 apply plugin: 'java'
@@ -42,5 +42,6 @@ sonarqube {
     properties {
         property "sonar.projectName", "Screenerd"
         property "sonar.projectKey", "com.screenerd-travis-project"
+        property "sonar.jacoco.reportPaths", "${jacoco.destinationFile}"
     }
 }
