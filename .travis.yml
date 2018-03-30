@@ -9,8 +9,8 @@ addons:
     organization: "temabensa"
     token:
       secure: "$SONAR_TOKEN"
-  script:
-    - sonar-scanner
+script:
+  - sonar-scanner
 deploy:
   provider: heroku
   api_key:
