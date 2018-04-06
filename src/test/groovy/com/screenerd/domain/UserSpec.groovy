@@ -26,12 +26,30 @@ class UserSpec extends Specification {
 
 
 
-    def "test the invalidity of user"(String login, String password, byte[] avatar) {
 
-        given: "a user initializes incorrectly"
+    def "test la validite d'un utilisateur créer"(String login, String password, byte[] avatar) {
+
+        given: "utilisateur initialise correctement"
         User user = new User(login: login, password: password, avatar: avatar)
 
-        expect: "user is invalide"
+        expect: "utlisateur est valide"
+        validator.validate(user).empty
+
+        where:
+        login    | password  | avatar
+        "Sara"   | "paswword"| ""
+        "Mathieu"| "Jacques" | ""
+        "Telly"  | "12345678"| ""
+
+    }
+
+
+    def "test l'invalidite d'un utilisateur "(String login, String password, byte[] avatar) {
+
+        given: "Intialisation d'un utilisateur"
+        User user = new User(login: login, password: password, avatar: avatar)
+
+        expect: "utilisateur est invalide"
         !validator.validate(user).empty
 
         where:
@@ -44,23 +62,6 @@ class UserSpec extends Specification {
 
     }
 
-
-
-    def "test the validity of user"(String login, String password, byte[] avatar) {
-
-        given: "a user initializes correctly"
-        User user = new User(login: login, password: password, avatar: avatar)
-
-        expect: "user is valide"
-        validator.validate(user).empty
-
-        where:
-        login    | password  | avatar
-        "Sara"   | "paswword"| ""
-        "Mathieu"| "Jacques" | ""
-        "Telly"  | "12345678"| ""
-
-    }
 
 
 }
