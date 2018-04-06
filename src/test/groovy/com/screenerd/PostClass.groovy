@@ -58,4 +58,16 @@ class PostClass extends Specification {
         new User() | null         |   [0, 0, 0, 0, 0] as byte[]   |    "png"
 
     }
+
+    def 'test add Like' () {
+        given: "a post "
+        Post post = new Post(new User(), "Descritpion", [0, 0, 0, 0, 0] as byte[], "png")
+        def nb = post.likes.size()
+
+        when: "we add a Like"
+        post.addLike();
+
+        expect: "list of like has one more like"
+        post.likes.size() == nb + 1
+    }
 }
