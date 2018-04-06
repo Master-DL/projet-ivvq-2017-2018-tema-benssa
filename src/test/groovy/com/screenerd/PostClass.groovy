@@ -29,8 +29,9 @@ class PostClass extends Specification {
         expect: "the post is valid"
         validator.validate(post).empty
 
-        and: "the post has no comment"
+        and: "the post has no comment and no likes"
         !post.comments
+        !post.likes
 
         where:
         aUser      | aDescription | aImage                        |    aFormat
