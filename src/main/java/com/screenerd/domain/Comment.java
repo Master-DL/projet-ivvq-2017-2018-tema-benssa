@@ -2,6 +2,7 @@ package com.screenerd.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by telly on 09/03/18.
@@ -14,6 +15,7 @@ public class Comment {
     private  Long id;
 
     @NotNull
+    @Size(min=2)
     private String content;
 
     @ManyToOne

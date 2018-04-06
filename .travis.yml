@@ -1,10 +1,28 @@
 language: java
 
+jdk:
+  - oraclejdk8
+
 notifications:
   email:
     on_success: never # default: change
     on_failure: always # default: always
 
+addons:
+  sonarcloud:
+    organization: "temabensa"
+    token:
+      secure: "$SONAR_TOKEN"
+script:
+  - ./gradlew sonarqube
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
+    - '$HOME/.gradle'
+    - '.gradle'
+    
 deploy:
   provider: heroku
   api_key:
