@@ -1,4 +1,4 @@
-package com.screenerd
+package com.screenerd.domain
 
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
@@ -12,7 +12,7 @@ import javax.validation.ValidatorFactory
 /**
  * Created by mathieukostiuk on 30/03/2018.
  */
-class PostClass extends Specification {
+class PostSpec extends Specification {
 
     Validator validator;
 

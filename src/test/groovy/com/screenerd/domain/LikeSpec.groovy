@@ -1,4 +1,4 @@
-package com.screenerd
+package com.screenerd.domain
 
 import com.screenerd.domain.Like
 import com.screenerd.domain.Post
