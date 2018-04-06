@@ -14,7 +14,7 @@ import javax.validation.ValidatorFactory
  * Created by sara on 09/03/2018.
  */
 
-class UserSignInTest extends Specification {
+class UserSpec extends Specification {
 
 
     Validator validator
