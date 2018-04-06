@@ -1,7 +1,10 @@
 package com.screenerd.domain;
 
-import javax.annotation.Generated;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -14,9 +17,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
 
-
+    @NotEmpty
     private String login;
+
+    @NotNull @Size(min = 6)
     private String password;
+
+    @NotNull
     private byte[] avatar;
 
     @OneToMany
@@ -44,6 +51,12 @@ public class User {
 
     public List<Post> getPosts() {
         return posts;
+    }
+
+    public User(String login, String password, byte[] avatar) {
+        this.login = login;
+        this.password = password;
+        this.avatar = avatar;
     }
 
     public String getLogin() {

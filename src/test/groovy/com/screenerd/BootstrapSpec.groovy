@@ -7,7 +7,7 @@ import spock.lang.Specification
  * Created by mathieukostiuk on 30/03/2018.
  */
 
-class BootstrapTest extends Specification {
+class BootstrapSpec extends Specification {
 
     //private Bootstrap bootstrap;
 
