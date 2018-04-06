@@ -19,9 +19,9 @@ class LikeSpec extends Specification{
         validator = factory.getValidator()
     }
 
-    def "test la validite d'un like d'un valide"(int value,User user,Post post){
+    def "la validité d'un like valide"(int value,User user,Post post){
 
-        given:"un Like correctement initialise"
+        given:"un like correctement initialisé "
         Like like = new Like(value,user,post)
 
         expect:"le like est valide"

@@ -14,7 +14,7 @@ class BootstrapSpec extends Specification {
     //@MockBean
     //private InitializationService initializationService;
 
-    def setupSpec() {
+/*    def setupSpec() {
       //  bootstrap = new Bootstrap(initializationService);
     }
 
@@ -35,5 +35,5 @@ class BootstrapSpec extends Specification {
         then:
         notThrown(Exception.class)
     }
-
+*/
 }
