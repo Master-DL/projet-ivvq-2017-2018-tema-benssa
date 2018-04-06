@@ -11,7 +11,7 @@ import javax.validation.Validator
 import javax.validation.ValidatorFactory
 
 
-class CommentTest extends GrooSpec {
+class CommentTest extends Specification {
 
     Validator validator
 
