@@ -1,5 +1,8 @@
 package com.screenerd
 
+import com.screenerd.domain.Comment
+import com.screenerd.domain.Post
+import com.screenerd.domain.User
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -27,25 +30,25 @@ class CommentTest extends GrooSpec {
         validator.validate(comment).empty
 
         where:
-        unContent   | unUser       | unPost
-        "commentaire"    | new User()   | new Post()
+        unContent   | unUser          | unPost
+        "commentaire"    | new User() | new Post()
 
     }
 
     @Unroll
-    void "test l'invalidite d'un comentaire non valide"(String unNom, String unPrenom, String unEmail, String unSexe) {
+    void "test l'invalidite d'un comentaire non valide"(String unContent, User unUser, Post unPost) {
 
         given: "un commentaire initialise de maniere non valide"
         Comment comment = new Comment(content: unContent, user: unUser, post: unPost)
 
         expect: "l'utilisateur est invalide"
-        validator.validate(comment).empty
+        !validator.validate(comment).empty
 
         where:
         unContent   | unUser       | unPost
         null    | new User()   | new Post()
         "commentaire"    | null   | new Post()
         "commentaire"    | new User()   | null
-
+        "c"    | new User()   | null
     }
 }

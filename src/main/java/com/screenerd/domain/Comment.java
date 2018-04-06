@@ -18,9 +18,11 @@ public class Comment {
     @Size(min=2)
     private String content;
 
+    @NotNull
     @ManyToOne
     private User user;
 
+    @NotNull
     @ManyToOne
     private  Post post;
 
@@ -28,6 +30,9 @@ public class Comment {
         this.content = content;
         this.user = user;
         this.post = post;
+    }
+
+    public Comment(){
     }
     
     public Long getId(){
@@ -42,7 +47,7 @@ public class Comment {
     	return user;
     }
     
-    public User getPost(){
+    public Post getPost(){
     	return post;
     }
     
