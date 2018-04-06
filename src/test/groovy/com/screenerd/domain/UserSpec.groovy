@@ -28,7 +28,7 @@ class UserSpec extends Specification {
 
     def "test the invalidity of user"(String login, String password, byte[] avatar) {
 
-        given: "a user initializes correctly"
+        given: "a user initializes incorrectly"
         User user = new User(login: login, password: password, avatar: avatar)
 
         expect: "user is invalide"
