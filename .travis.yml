@@ -16,15 +16,22 @@ addons:
 script:
   - ./gradlew sonarqube
 
+script: "sbt clean coverage test"
+
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
     - '$HOME/.gradle'
     - '.gradle'
-    
+
 deploy:
   provider: heroku
   api_key:
       secure: "2c97166d-4beb-4bf2-917b-d58bdc2c41de"
-  app: screenerd
+
+app: screenerd
+
+
+
+after_success: "sbt coveralls"
