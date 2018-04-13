@@ -1,7 +1,10 @@
 package com.screenerd.domain;
 
+import org.springframework.data.annotation.CreatedBy;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +31,18 @@ public class Post {
     private String description;
 
     @OneToMany
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany
-    private  List<Like> likes;
-
+    private  List<Like> likes = new ArrayList<>();
 
     public Post(){}
+
+    public void addLike(Like like) {
+        likes.add(like);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 }
