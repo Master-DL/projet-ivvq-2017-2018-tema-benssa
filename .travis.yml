@@ -16,8 +16,6 @@ addons:
 script:
   - ./gradlew sonarqube
 
-script: "sbt clean coverage test"
-
 cache:
   directories:
     - '$HOME/.m2/repository'
