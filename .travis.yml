@@ -14,8 +14,11 @@ addons:
     organization: "temabensa"
     token:
       secure: "$SONAR_TOKEN"
+before_script:
+  - chmod +x gradlew
 script:
   - ./gradlew sonarqube
+  - ./gradlew codeCoverageReport
 
 cache:
   directories:
