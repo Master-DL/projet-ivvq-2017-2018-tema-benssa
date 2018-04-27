@@ -1,8 +1,7 @@
-package com.screenerd.sevice
+package com.screenerd.service
 
 import com.screenerd.domain.User
 import com.screenerd.repository.UserRepository
-import com.screenerd.service.UserService
 import org.springframework.data.repository.PagingAndSortingRepository
 import spock.lang.Specification
 
