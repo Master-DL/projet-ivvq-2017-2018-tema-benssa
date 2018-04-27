@@ -20,3 +20,13 @@ Définition de fini :
   - 0 bugs et 0 vulnérabilités sur SonarQube
   - les tests d'intégration sont tous acceptées
   - les tests unitaires sont tous acceptés
+
+##Intégration Continue:
+https://travis-ci.org/Master-DL/projet-ivvq-2017-2018-tema-benssa
+
+##Qualité de code:
+https://sonarcloud.io/dashboard?id=com.screenerd-travis-project
+
+https://codecov.io/gh/Master-DL/projet-ivvq-2017-2018-tema-benssa
+
+##Déploiement:

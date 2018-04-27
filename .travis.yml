@@ -24,6 +24,7 @@ cache:
 before_install:
   - chmod +x gradlew
 after_success:
+  - ./gradlew sonarqube
   - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: heroku
