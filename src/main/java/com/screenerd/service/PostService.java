@@ -29,4 +29,8 @@ public class PostService {
     public void setPostRepository(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
+
+    public Iterable<Post> findAllPosts() {
+        return this.postRepository.findAll();
+    }
 }
