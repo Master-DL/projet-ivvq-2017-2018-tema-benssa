@@ -21,8 +21,9 @@ cache:
     - '$HOME/.sonar/cache'
     - '$HOME/.gradle'
     - '.gradle'
+before_install:
+  - chmod +x gradlew
 after_succes:
-  - ./gradlew sonarqube
   - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: heroku
