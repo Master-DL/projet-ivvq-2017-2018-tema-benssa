@@ -44,3 +44,9 @@ sonarqube {
         property "sonar.projectKey", "com.screenerd-travis-project"
     }
 }
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		html.enabled false
+	}
+}
