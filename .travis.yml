@@ -23,7 +23,7 @@ cache:
     - '.gradle'
 before_install:
   - chmod +x gradlew
-after_succes:
+after_success:
   - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: heroku
