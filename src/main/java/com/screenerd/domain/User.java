@@ -28,13 +28,13 @@ public class User {
     private byte[] avatar;
 
     @OneToMany
-    private List<Comment> comments = new ArrayList<>();;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany
-    private List<Post> posts = new ArrayList<>();;
+    private List<Post> posts = new ArrayList<>();
 
     @OneToMany
-    private List<Like> likes = new ArrayList<>();;
+    private List<Like> likes = new ArrayList<>();
 
     public User(){}
 
