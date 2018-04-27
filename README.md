@@ -1,4 +1,4 @@
-<h1><b> screeNerd </b></h1>
+#screeNerd 
 
 ![Alt text](logo.png)
 
@@ -11,23 +11,26 @@ L’objectif du site est uniquement de partager des images de jeux, et n’a pas
 
 L’application peut se voir comme un Pinterest-like dédié à l’univers vidéo-ludique.
 
-Définition de prêt : 
+##Définition de prêt : 
   - le démarrage d'une story n'est pas génée par une story non terminée (selon la définition de fini)
   - les tests d'acceptation ont été écrits et validés par les membres du groupe
 
-Définition de fini : 
+##Définition de fini : 
   - les tests d'acceptation sont passés
   - 0 bugs et 0 vulnérabilités sur SonarQube
   - les tests d'intégration sont tous acceptées
   - les tests unitaires sont tous acceptés
 
 ##Intégration Continue:
+
 https://travis-ci.org/Master-DL/projet-ivvq-2017-2018-tema-benssa
 
 ##Qualité de code:
+
 https://sonarcloud.io/dashboard?id=com.screenerd-travis-project
 
 https://codecov.io/gh/Master-DL/projet-ivvq-2017-2018-tema-benssa
 
 ##Déploiement:
+
 https://screenerd.herokuapp.com/
