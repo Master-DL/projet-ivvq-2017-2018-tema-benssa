@@ -1,7 +1,6 @@
 package com.screenerd.service;
 
-import com.screenerd.domain.Like;
-import com.screenerd.repository.LIkeRepository;
+import com.screenerd.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +11,6 @@ import org.springframework.stereotype.Service;
 public class LikeService {
 
     private @Autowired
-    LIkeRepository lIkeRepository;
+    LikeRepository likeRepository;
 
-    public  void saveLike(Like like){
-        lIkeRepository.save(like);
-    }
 }

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * Created by telly on 13/04/18.
  */
 @Repository
-public interface LIkeRepository extends CrudRepository<Like,Long>{
+public interface LikeRepository extends CrudRepository<Like,Long>{
 }
