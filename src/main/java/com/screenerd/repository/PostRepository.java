@@ -1,12 +1,11 @@
 package com.screenerd.repository;
 
 import com.screenerd.domain.Post;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
- * Created by mathieukostiuk on 27/04/2018.
+ * Created by telly on 17/05/18.
  */
-@Repository
-public interface PostRepository extends CrudRepository<Post, Long> {
-}
+public interface PostRepository extends PagingAndSortingRepository<Post,Long> {
+
+
