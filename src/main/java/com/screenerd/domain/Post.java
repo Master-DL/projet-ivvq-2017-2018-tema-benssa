@@ -40,7 +40,7 @@ public class Post {
     public Post(User u, byte[] i, String iF, String d) {
         this.user = u;
         this.image = i;
-        this.description = description;
+        this.description = d;
         this.imageFormat = iF;
     }
 
@@ -58,5 +58,9 @@ public class Post {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 }
