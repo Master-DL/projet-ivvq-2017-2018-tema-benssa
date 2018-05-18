@@ -1,6 +1,5 @@
 package com.screenerd.domain;
 
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
