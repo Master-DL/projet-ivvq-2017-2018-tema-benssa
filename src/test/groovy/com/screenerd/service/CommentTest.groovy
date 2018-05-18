@@ -1,4 +1,4 @@
-package com.screenerd
+package com.screenerd.service
 
 import com.screenerd.domain.Comment
 import com.screenerd.domain.Post
