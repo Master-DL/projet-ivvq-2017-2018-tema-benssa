@@ -1,6 +1,5 @@
 package com.screenerd.domain;
 
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -44,5 +43,9 @@ public class Post {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }
