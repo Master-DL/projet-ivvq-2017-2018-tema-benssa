@@ -1,4 +1,5 @@
 language: java
+sudo: false
 
 jdk:
   - oraclejdk8
@@ -13,8 +14,6 @@ addons:
     organization: "temabensa"
     token:
       secure: "$SONAR_TOKEN"
-script:
-  - ./gradlew sonarqube
 
 cache:
   directories:
@@ -22,14 +21,13 @@ cache:
     - '$HOME/.sonar/cache'
     - '$HOME/.gradle'
     - '.gradle'
-
+before_install:
+  - chmod +x gradlew
+after_success:
+  - ./gradlew sonarqube
+  - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: heroku
   api_key:
       secure: "2c97166d-4beb-4bf2-917b-d58bdc2c41de"
-
-app: screenerd
-
-
-
-after_success: "sbt coveralls"
+  app: screenerd

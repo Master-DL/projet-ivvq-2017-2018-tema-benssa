@@ -1,12 +1,13 @@
 package com.screenerd.repository;
 
 import com.screenerd.domain.User;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 /**
- * Created by mousa on 13/04/2018.
+ * Created by telly on 17/05/18.
  */
-
-public interface UserRepository extends PagingAndSortingRepository<User, Long> {
-
-    }
+@Repository
+public interface UserRepository extends PagingAndSortingRepository<User,Long> {
+}

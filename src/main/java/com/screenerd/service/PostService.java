@@ -1,5 +1,6 @@
 package com.screenerd.service;
 
+
 import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
 import com.screenerd.repository.PostRepository;
@@ -28,5 +29,9 @@ public class PostService {
 
     public void setPostRepository(PostRepository postRepository) {
         this.postRepository = postRepository;
+    }
+
+    public Iterable<Post> findAllPosts() {
+        return this.postRepository.findAll();
     }
 }

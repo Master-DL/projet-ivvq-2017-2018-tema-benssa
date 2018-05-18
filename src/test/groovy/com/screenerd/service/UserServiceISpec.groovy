@@ -3,16 +3,11 @@ package com.screenerd.service
 import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 
-/**
- * Created by mousa on 13/04/2018.
- */
 
-@ContextConfiguration
 @SpringBootTest
 class UserServiceISpec extends Specification {
     @Autowired UserService userService
@@ -39,11 +34,7 @@ class UserServiceISpec extends Specification {
         then: "A validation exception is thrown"
         thrown ConstraintViolationException
 
-        and: "bob has still null id"
+        and: "the user has still a null id"
         thomas.id == null
     }
-
-
-
-
 }
