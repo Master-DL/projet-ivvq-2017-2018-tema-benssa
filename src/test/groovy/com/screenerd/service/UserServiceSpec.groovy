@@ -8,7 +8,7 @@ import spock.lang.Specification
 /**
  * Created by mousa on 13/04/2018.
  */
-class UserServiceSpoc extends Specification {
+class UserServiceSpec extends Specification {
     UserService userService
     UserRepository userRepository
 
