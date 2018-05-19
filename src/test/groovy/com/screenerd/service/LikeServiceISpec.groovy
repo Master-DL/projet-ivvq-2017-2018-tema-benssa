@@ -25,8 +25,10 @@ class LikeServiceISpec extends Specification{
     UserRepository userRepository
     @Autowired
     PostRepository postRepository
+    @Autowired
+    PostService postService
 
-    def "test save a null like"(){
+   def "test save a null like"(){
         given: "a null like"
         Like like = null
 
@@ -98,4 +100,5 @@ class LikeServiceISpec extends Specification{
         and: "the post contains the like"
         post.likes.contains(like)
     }
+
 }

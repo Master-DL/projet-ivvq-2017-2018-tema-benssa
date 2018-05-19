@@ -6,8 +6,6 @@ import com.screenerd.domain.User;
 import com.screenerd.repository.PostRepository;
 import com.screenerd.repository.UserRepository;
 import com.screenerd.service.LikeService;
-import com.screenerd.service.PostService;
-import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

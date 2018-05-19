@@ -16,6 +16,8 @@ public class PostService {
     @Autowired private PostRepository postRepository;
     @Autowired private UserRepository userRepository;
 
+    private static int cpt = 0;
+
     public Post savePost(Post post) {
         if (post == null)
             throw new IllegalArgumentException("Post cannot be null");
@@ -26,7 +28,6 @@ public class PostService {
             author.getPosts().add(post);
         }
         postRepository.save(post);
-
         return post;
     }
 

@@ -4,8 +4,6 @@ import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.LikeRepository
-import com.screenerd.repository.PostRepository
-import com.screenerd.repository.UserRepository
 import org.springframework.data.repository.CrudRepository
 import spock.lang.Specification
 

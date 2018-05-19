@@ -2,13 +2,10 @@ package com.screenerd.service
 
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
-import org.hibernate.exception.ConstraintViolationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
-import spock.lang.Unroll
 
 /**
  * Created by mathieukostiuk on 27/04/2018.
