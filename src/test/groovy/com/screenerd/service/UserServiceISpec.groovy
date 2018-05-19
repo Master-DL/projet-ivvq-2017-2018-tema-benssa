@@ -12,23 +12,23 @@ import javax.validation.ConstraintViolationException
 class UserServiceISpec extends Specification {
     @Autowired UserService userService
 
-    def "test save a valid utilisateur"() {
-        given: "a valid utilisateur"
+    def "test save a valid user"() {
+        given: "a valid user"
         User user = new User(login: "thomas", password: "123456",avatar: "")
 
-        when: "the utilisateur is saved"
+        when: "the user is saved"
         userService.saveUser(user);
 
-        then: "the utilisateur has an id"
+        then: "the user has an id"
         user.id != null
 
     }
 
-    def "test save a non valid utilisateur"() {
-        given: "a non valid utilisateur"
+    def "test save a non valid user"() {
+        given: "a non valid user"
         User thomas = new User(login: "", password: "123456",avatar: "")
 
-        when: "the utilisateur is saved"
+        when: "the user is saved"
         userService.saveUser(thomas);
 
         then: "A validation exception is thrown"
@@ -37,4 +37,5 @@ class UserServiceISpec extends Specification {
         and: "the user has still a null id"
         thomas.id == null
     }
+ 
 }

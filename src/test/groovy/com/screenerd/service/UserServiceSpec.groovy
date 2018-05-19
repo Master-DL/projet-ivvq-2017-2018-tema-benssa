@@ -35,6 +35,19 @@ class UserServiceSpec extends Specification {
         1 * userRepository.save(user)
     }
 
+    def "test the delete of user"() {
+        given: "an utilisateur"
+        def user = Mock(User)
+
+        when: "delet the user"
+        userService.saveUser(user);
+        userService.deleteUser(user.getId())
+
+        then: "test that the user deleted"
+        user.getId()==null
+    }
+
+
 
 
 }
