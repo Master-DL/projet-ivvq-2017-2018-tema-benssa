@@ -20,11 +20,11 @@ public class Like {
     @Min(1)
     private int value;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @NotNull
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @NotNull
     private Post post;
 
@@ -34,5 +34,21 @@ public class Like {
         this.user = user;
         this.post = post;
         this.value = value;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getValue() {
+        return value;
     }
 }
