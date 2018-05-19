@@ -30,6 +30,12 @@ public class PostService {
         return post;
     }
 
+    public void deletePost(Long id) {
+        Post post = this.postRepository.findOne(id);
+        post.getUser().getPosts().remove(post);
+        this.postRepository.delete(id);
+    }
+
     public PostRepository getPostRepository() {
         return this.postRepository;
     }
@@ -41,4 +47,5 @@ public class PostService {
     public Iterable<Post> findAllPosts() {
         return this.postRepository.findAll();
     }
+
 }
