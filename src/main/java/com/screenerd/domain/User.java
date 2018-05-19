@@ -52,6 +52,25 @@ public class User {
         return likes;
     }
 
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    /**public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+    public void addLike(Comment comment) {
+        comments.add(comment);
+    }**/
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     public List<Post> getPosts() {
         return posts;
     }

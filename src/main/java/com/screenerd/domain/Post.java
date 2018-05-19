@@ -40,6 +40,13 @@ public class Post {
 
     public Post(){}
 
+    public Post(User u, byte[] i, String iF, String d) {
+        this.user = u;
+        this.image = i;
+        this.description = d;
+        this.imageFormat = iF;
+    }
+
     public void addLike(Like like) {
         likes.add(like);
     }
@@ -55,4 +62,10 @@ public class Post {
     public Long getId() {
         return id;
     }
+    
+    public String getDescription() {
+        return this.description;
+    }
+
+
 }

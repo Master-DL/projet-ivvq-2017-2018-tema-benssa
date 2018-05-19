@@ -3,6 +3,7 @@ package com.screenerd.service
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
+import com.screenerd.repository.UserRepository
 import org.springframework.data.repository.CrudRepository
 import spock.lang.Specification
 
@@ -12,13 +13,17 @@ import spock.lang.Specification
 
 class PostServiceSpec extends Specification {
 
-    PostService postService;
-    PostRepository postRepository;
+    PostService postService
+    PostRepository postRepository
+    UserRepository userRepository
+    User user
 
     void setup() {
-        postRepository = Mock();
-        postService = new PostService();
-        postService.postRepository = postRepository;
+        postRepository = Mock()
+        userRepository = Mock()
+        postService = new PostService()
+        postService.postRepository = postRepository
+        postService.userRepository = userRepository
     }
 
     def "check the type of the repository"() {

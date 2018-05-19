@@ -1,6 +1,7 @@
 package com.screenerd.controller
 
 import com.screenerd.domain.User
+import com.screenerd.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -9,14 +10,14 @@ import org.springframework.util.MultiValueMap
 import spock.lang.Specification
 
 
-/**
- * Created by telly on 17/05/18.
- */
+
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerISpec extends Specification{
 
     @Autowired
     TestRestTemplate restTemplate
+    @Autowired
+    private UserRepository userRepository;
 
     def "test add valid user"(){
         when: "when the addUser url is triggered with valid input for user"
@@ -32,6 +33,18 @@ class UserControllerISpec extends Specification{
         user.login == "login"
         user.password == "password"
         user.avatar == avatar
+    }
+    void "test delete user"(Long id) {
+
+        when: "user delete"
+        restTemplate.delete("/api/v1/newUser/${id}")
+
+        then: "it is true of the database"
+        userRepository.findOne(id)
+
+        where:
+        id|_
+        1 |_
     }
 
 }
