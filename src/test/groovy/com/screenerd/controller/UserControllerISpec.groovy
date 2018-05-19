@@ -41,10 +41,11 @@ class UserControllerISpec extends Specification{
         restTemplate.delete("/api/v1/newUser/${id}")
 
         then: "it is true of the database"
-        !userRepository.findOne(id)
+        userRepository.findOne(id)
 
         where:
         id|_
         1 |_
     }
+
 }
