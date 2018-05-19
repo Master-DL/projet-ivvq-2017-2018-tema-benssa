@@ -1,7 +1,6 @@
 package com.screenerd.repository;
 
 import com.screenerd.domain.User;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

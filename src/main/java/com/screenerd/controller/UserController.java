@@ -29,13 +29,12 @@ public class UserController {
 
     @RequestMapping(value = "/api/v1/user/{id}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable("id") Long id) {
-        System.out.println(id);
         userService.deleteUser(id);
     }
 
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user){
         User userUpdate = userService.saveUser(user);
-        return  new ResponseEntity<User>(userUpdate, HttpStatus.OK);
+        return  new ResponseEntity<>(userUpdate, HttpStatus.OK);
     }
 }

@@ -16,7 +16,6 @@ public class PostService {
     @Autowired private PostRepository postRepository;
     @Autowired private UserRepository userRepository;
 
-    private static int cpt = 0;
 
     public Post savePost(Post post) {
         if (post == null)
