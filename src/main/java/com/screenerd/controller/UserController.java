@@ -1,7 +1,6 @@
 package com.screenerd.controller;
 
 import com.screenerd.domain.User;
-import com.screenerd.repository.UserRepository;
 import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
