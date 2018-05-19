@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * Created by mathieukostiuk on 27/04/2018.
@@ -16,6 +17,7 @@ import spock.lang.Specification
 @SpringBootTest
 @Transactional
 class PostServiceISpec extends Specification {
+
     @Autowired PostService postService
 
 
@@ -72,5 +74,28 @@ class PostServiceISpec extends Specification {
 
         then: "the result references 2 posts"
         posts.size() == 2
+    }
+
+    def "delete one post" () {
+        given: "one valid User"
+        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+
+        and: "two posts this user wrote"
+        Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
+        Post post2 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test2", "test2")
+
+        and: "we save the 2 posts"
+        post1 = postService.savePost(post1)
+        post2 = postService.savePost(post2)
+
+        when: "we delete the first post"
+        postService.deletePost(post1.getId())
+
+        and: "requesting for all posts"
+        ArrayList<Post> posts = postService.findAllPosts()
+
+        then: "the result references 1 post"
+        posts.size() == 1
+
     }
 }

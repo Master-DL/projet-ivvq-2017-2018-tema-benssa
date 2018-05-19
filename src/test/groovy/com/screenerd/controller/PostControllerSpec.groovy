@@ -16,11 +16,14 @@ class PostControllerSpec extends Specification {
 
     def setup() {
         postService = Mock()
-        userService = Mock()
+        userService = Mock(UserService) {
+            findUser(1) >> Mock(User)
+        }
         postRepository = Mock()
         user = Mock()
         postController = new PostController()
         postController.postService = postService
+        postController.userService = userService
     }
 
     def "test add post" () {
