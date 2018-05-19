@@ -1,7 +1,9 @@
 package com.screenerd.domain;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +30,37 @@ public class Post {
     private String description;
 
     @OneToMany
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany
-    private  List<Like> likes;
-
+    private  List<Like> likes = new ArrayList<>();
 
     public Post(){}
+
+    public Post(User u, byte[] i, String iF, String d) {
+        this.user = u;
+        this.image = i;
+        this.description = d;
+        this.imageFormat = iF;
+    }
+
+    public void addLike(Like like) {
+        likes.add(like);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
 }
