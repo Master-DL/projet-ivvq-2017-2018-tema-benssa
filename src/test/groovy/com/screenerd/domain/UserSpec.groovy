@@ -61,6 +61,21 @@ class UserSpec extends Specification {
         "Telly"  | "12345678"| ""
 
     }
+    def "add coment"(String login, String password, byte[] avatar) {
+
+        given: "a user initializes correctly"
+        User user = new User(login: login, password: password, avatar: avatar)
+
+        expect: "user is valide"
+        validator.validate(user).empty
+
+        where:
+        login    | password  | avatar
+        "Sara"   | "paswword"| ""
+        "Mathieu"| "Jacques" | ""
+        "Telly"  | "12345678"| ""
+
+    }
 
 
 }

@@ -7,37 +7,34 @@ import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 
-/**
- * Created by telly on 17/05/18.
- */
+
 @SpringBootTest
-class UserServiceISpec extends Specification{
+class UserServiceISpec extends Specification {
+    @Autowired UserService userService
 
-    @Autowired
-    UserService userService
+    def "test save a valid utilisateur"() {
+        given: "a valid utilisateur"
+        User user = new User(login: "thomas", password: "123456",avatar: "")
 
-    def "test save a valid user"(){
-        given: "a valid user"
-        User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
+        when: "the utilisateur is saved"
+        userService.saveUser(user);
 
-        when: "the user is saved"
-        userService.saveUser(user)
-
-        then: "the user has an id"
+        then: "the utilisateur has an id"
         user.id != null
+
     }
 
-    def "test save a non valid user"(){
-        given: "a non valid user"
-        User user = new User(login: "login",password: null,avatar: [1, 3, 6])
+    def "test save a non valid utilisateur"() {
+        given: "a non valid utilisateur"
+        User thomas = new User(login: "", password: "123456",avatar: "")
 
-        when: "the user is saved"
-        userService.saveUser(user)
+        when: "the utilisateur is saved"
+        userService.saveUser(thomas);
 
         then: "A validation exception is thrown"
         thrown ConstraintViolationException
 
         and: "the user has still a null id"
-        user.id == null
+        thomas.id == null
     }
 }

@@ -2,37 +2,39 @@ package com.screenerd.service
 
 import com.screenerd.domain.User
 import com.screenerd.repository.UserRepository
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.PagingAndSortingRepository
 import spock.lang.Specification
 
 /**
- * Created by telly on 17/05/18.
+ * Created by mousa on 13/04/2018.
  */
-class UserServiceSpec extends  Specification{
-
+class UserServiceSpec extends Specification {
     UserService userService
     UserRepository userRepository
 
-    def setup(){
-        userRepository = Mock();
-        userService = new UserService();
+    void setup() {
+        userRepository = Mock()
+        userService = new UserService()
         userService.userRepository = userRepository
     }
 
-    def "check type of userRepository"(){
-        expect: "userRepository is a CrudRepository"
-        userRepository instanceof CrudRepository
+    def "check type of utilisateurRepository"() {
+        expect: "utilisateurRepository is a Spring repository"
+        userRepository instanceof PagingAndSortingRepository
     }
 
-    def "test delegation of save of an user to the userRepository"(){
-        given: "a user"
-        User user = Mock(User)
 
-        when: "the user is saved"
-        userService.saveUser(user)
+    def "test delegation of save of an Utilisateur to the repository"() {
+        given: "an utilisateur"
+        def user = Mock(User)
 
-        then: "the save is delegated to the userRepository"
+        when: "the utilisateur is saved"
+        userService.saveUser(user);
+
+        then: "the save is delegated to the utilisateurRepository"
         1 * userRepository.save(user)
-
     }
+
+
+
 }
