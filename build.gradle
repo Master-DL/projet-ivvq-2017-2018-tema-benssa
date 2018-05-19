@@ -31,15 +31,11 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
 	compile ('org.springframework.boot:spring-boot-starter-validation')
-	compile('cglib:cglib-nodep:2.2')
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.spockframework:spock-core:1.1-groovy-2.4-rc-2')
-	testCompile('org.spockframework:spock-spring:1.1-groovy-2.4-rc-2')
 	testCompile('org.codehaus.groovy:groovy-all:2.4.10')
-	testCompile('cglib:cglib-nodep:3.2.4')
 }
 
 sonarqube {
