@@ -8,8 +8,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by telly on 09/03/18.
  */
-
-@Entity(name = "Likes")
+@Entity
 public class Like {
 
     @Id

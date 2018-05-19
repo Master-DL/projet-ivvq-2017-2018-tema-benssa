@@ -11,7 +11,7 @@ import javax.validation.Validator
 import javax.validation.ValidatorFactory
 
 
-class CommentSpec extends Specification {
+class CommentTest extends Specification {
 
     Validator validator
 
