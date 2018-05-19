@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService;
 
 
-    @RequestMapping(value = "/api/v1/newUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/user",method = RequestMethod.POST)
     public User addUser(@RequestParam(value="login") String login, @RequestParam(value="password") String password,
                         @RequestParam(value="avatar") byte[] avatar){
         User user = new User(login,password,avatar);
@@ -27,8 +27,9 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/api/v1/newUser/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/v1/user/{id}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable("id") Long id) {
+        System.out.println(id);
         userService.deleteUser(id);
     }
 
