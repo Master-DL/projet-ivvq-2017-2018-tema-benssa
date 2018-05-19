@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User,Long> {
    void deleteById(Long id);
+   User findByLoginAndPassword(String login, String password);
 }

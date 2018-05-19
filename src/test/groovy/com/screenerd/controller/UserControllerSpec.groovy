@@ -4,9 +4,7 @@ import com.screenerd.repository.UserRepository
 import com.screenerd.service.UserService
 import spock.lang.Specification
 
-/**
- * Created by telly on 17/05/18.
- */
+
 class UserControllerSpec extends Specification {
 
     UserController userController
@@ -30,9 +28,9 @@ class UserControllerSpec extends Specification {
     }
 
     def "test delete user"() {
-        when: "une requête de suppression est déclenchée"
+        when: "the requte delete"
         userController.deleteUser(1);
-        then: "l'action est déléguée au repository"
+        then: "the save is delegated to the userService"
         1 * userService.deleteUser(1)
     }
 }
