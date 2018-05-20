@@ -1,5 +1,6 @@
 package com.screenerd.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class User {
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany
+    @JsonIgnore
     private List<Like> likes = new ArrayList<>();
 
     public User(){}
@@ -48,6 +50,25 @@ public class User {
 
     public List<Like> getLikes() {
         return likes;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    /**public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+    public void addLike(Comment comment) {
+        comments.add(comment);
+    }**/
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     public List<Post> getPosts() {
@@ -83,5 +104,9 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public void addLike(Like like){
+        likes.add(like);
     }
 }

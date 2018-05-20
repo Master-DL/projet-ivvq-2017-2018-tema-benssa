@@ -1,6 +1,8 @@
 package com.screenerd.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -33,9 +35,17 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany
+    @JsonIgnore
     private  List<Like> likes = new ArrayList<>();
 
     public Post(){}
+
+    public Post(User u, byte[] i, String iF, String d) {
+        this.user = u;
+        this.image = i;
+        this.description = d;
+        this.imageFormat = iF;
+    }
 
     public void addLike(Like like) {
         likes.add(like);
@@ -48,4 +58,14 @@ public class Post {
     public User getUser() {
         return this.user;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+
 }
