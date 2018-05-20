@@ -2,6 +2,7 @@ package com.screenerd.service
 
 import com.screenerd.domain.Comment
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 
 import javax.validation.ConstraintViolationException
 import com.screenerd.domain.Post
@@ -9,6 +10,7 @@ import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Specification
 
+@Transactional
 @SpringBootTest
 class CommentServiceISpec extends Specification {
 
