@@ -46,4 +46,6 @@ public class PostService {
         return this.postRepository.findAll();
     }
 
+    public Post findPostById(Long id) { return this.postRepository.findOne(id);}
+
 }

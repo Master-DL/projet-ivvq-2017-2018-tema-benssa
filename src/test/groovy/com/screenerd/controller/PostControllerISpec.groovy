@@ -50,4 +50,8 @@ class PostControllerISpec extends Specification {
         post.image == avatar
         post.imageFormat == "png"
     }
+
+    def "test findAllPosts" () {
+
+    }
 }

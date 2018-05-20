@@ -82,4 +82,27 @@ class PostServiceSpec extends Specification {
         then: "the deletion is delegated to the repository"
         1 * postService.postRepository.delete(id)
     }
+
+    def "get one post with its id" () {
+        given: "a post"
+        post = Mock(Post) {
+            getUser() >> Mock(User) {
+                getPosts() >> Mock(ArrayList) {
+                    remove(post) >> post
+                }
+
+            }
+            getId() >> 1
+        }
+
+        and: "the post is saved in the repo"
+        postService.savePost(post)
+        def id = post.getId()
+
+        when: "we request this post"
+        postService.findPostById(id)
+
+        then: "the request is delegated to the repository"
+        1 * postService.postRepository.findOne(id)
+    }
 }

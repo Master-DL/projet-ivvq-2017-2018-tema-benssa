@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.IllegalFormatException;
 
 
@@ -37,6 +38,16 @@ public class PostController {
     @RequestMapping(value = "api/v1/deletePost/{id}", method = RequestMethod.DELETE)
     public void deletePost(@PathVariable("id") Long id) {
         postService.deletePost(id);
+    }
+
+    @RequestMapping(value = "api/v1/getPost", method = RequestMethod.GET)
+    public Iterable<Post> findAllPosts() {
+        return postService.findAllPosts();
+    }
+
+    @RequestMapping(value = "api/v1/getPost/{id}", method = RequestMethod.GET)
+    public Post findPostById(@PathVariable("id") Long id) {
+        return postService.findPostById(id);
     }
 
 }
