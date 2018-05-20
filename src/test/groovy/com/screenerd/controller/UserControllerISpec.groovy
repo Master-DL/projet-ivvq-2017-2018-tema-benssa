@@ -10,9 +10,6 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import spock.lang.Specification
 
-import javax.validation.ConstraintViolationException
-
-@Transactional
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerISpec extends Specification{
 

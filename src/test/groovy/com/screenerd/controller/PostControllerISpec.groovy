@@ -2,13 +2,11 @@ package com.screenerd.controller
 
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
-import com.screenerd.repository.PostRepository
-import com.screenerd.repository.UserRepository
+import com.screenerd.service.PostService
 import com.screenerd.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -22,7 +20,7 @@ class PostControllerISpec extends Specification {
     @Autowired
     private UserService userService;
     @Autowired
-    private PostRepository postRepository;
+    private PostService postService;
 
     def "test add a valid post" () {
 
@@ -52,6 +50,56 @@ class PostControllerISpec extends Specification {
     }
 
     def "test findAllPosts" () {
+        given: "a repo with one user"
+        byte [] avatar = [1,2]
+        MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
+        map.add("login","login")
+        map.add("password","password")
+        map.add("avatar",avatar)
+        User user = restTemplate.postForObject("/api/v1/newUser",map,User.class)
 
+        and: "two posts this user wrote"
+        map = new LinkedMultiValueMap<String,Object>()
+        map.add("idUser",user.getId())
+        map.add("image",avatar)
+        map.add("imageFormat","png")
+        map.add("description", "post1")
+        Post post1 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
+        map.add("description", "post2")
+        Post post2 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
+
+        when: "we request all the posts that are saved"
+        Iterable<Post> posts = restTemplate.getForObject("/api/v1/getPost", Iterable.class)
+
+        then: "we retrieve the two posts"
+        posts.asCollection().description.contains(post1.description)
+        posts.asCollection().description.contains(post2.description)
+    }
+
+    def "test find one post" () {
+        given: "a repo with one user"
+        byte [] avatar = [1,2]
+        MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
+        map.add("login","login")
+        map.add("password","password")
+        map.add("avatar",avatar)
+        User user = restTemplate.postForObject("/api/v1/newUser",map,User.class)
+
+        and: "two posts this user wrote"
+        map = new LinkedMultiValueMap<String,Object>()
+        map.add("idUser",user.getId())
+        map.add("image",avatar)
+        map.add("imageFormat","png")
+        map.add("description", "post1")
+        Post post1 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
+        map.add("description", "post2")
+        Post post2 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
+
+        when: "we request the second post"
+        Post retrievedPost = restTemplate.getForObject("/api/v1/getPost/"+post2.id, Post.class)
+
+        then: "the id of the retrieved post is correct"
+        retrievedPost != null
+        post2.id == retrievedPost.id
     }
 }

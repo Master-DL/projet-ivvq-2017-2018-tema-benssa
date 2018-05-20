@@ -3,7 +3,6 @@ package com.screenerd.service
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
-import com.screenerd.repository.UserRepository
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
