@@ -20,7 +20,10 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     public Comment saveComment(Comment comment){
+
         Comment saved = commentRepository.save(comment);
+        comment.getUser().getComments().add(saved);
+        comment.getPost().addComment(saved);
         return saved;
     }
 }

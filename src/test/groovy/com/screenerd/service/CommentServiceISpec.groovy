@@ -39,7 +39,7 @@ class CommentServiceISpec extends Specification {
         comment.id != null
     }
 
-    def "test save a non valid user"(){
+    def "test save a non valid comment"(){
         given: "a user"
         User user = new User(login: "login",password: "password",avatar: [1,3,6]);
         and: "a post"
@@ -47,16 +47,15 @@ class CommentServiceISpec extends Specification {
         and: "a comment"
         Comment comment = new Comment(content:"a", user: null, post: post);
 
-        when: "the user is saved"
+        when: "the comment is saved"
         User savedUser = userService.saveUser(user)
         Post savedPost = postService.savePost(post)
-        user.getComments().add(comment)
         Comment savedComment = commentService.saveComment(comment)
 
         then: "A validation exception is thrown"
         thrown ConstraintViolationException
 
-        and: "the user has still a null id"
+        and: "the comment has still a null id"
         comment.id == null
     }
 }

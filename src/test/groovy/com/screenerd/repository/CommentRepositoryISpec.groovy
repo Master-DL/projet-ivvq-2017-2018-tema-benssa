@@ -34,7 +34,6 @@ class CommentRepositoryISpec extends Specification{
         when: "comment is saved"
         User savedUser = userRepository.save(user)
         Post savedPost = postRepository.save(post)
-        user.getComments().add(comment)
         Comment savedComment = commentRepository.save(comment)
         then: "the savedComment is comment"
         savedComment == comment

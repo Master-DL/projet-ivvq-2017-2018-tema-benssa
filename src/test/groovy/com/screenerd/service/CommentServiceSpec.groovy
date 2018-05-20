@@ -33,7 +33,9 @@ class CommentServiceSpec extends Specification {
         given: "a comment"
         def comment = Mock(Comment) {
 
-            getUser() >> Mock(User)
+            getUser() >> Mock(User){
+                getComments() >> new ArrayList<Comment>()
+            }
             getPost() >> Mock(Post)
             getContent() >> ""
         }
