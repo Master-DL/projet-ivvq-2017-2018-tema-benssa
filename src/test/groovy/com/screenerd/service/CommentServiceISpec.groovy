@@ -58,4 +58,30 @@ class CommentServiceISpec extends Specification {
         and: "the comment has still a null id"
         comment.id == null
     }
+
+    def "delete one comment" () {
+        given: "an user"
+        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+        and: "a post"
+        Post post = new Post(user: user, description: "GG", image: [0, 0, 0, 0, 0] as byte[] , imageFormat: "png");
+        and: "two comment this user wrote on this post"
+        Comment comment1 = new Comment(content:"comment 1 here", user: user, post: post);
+        Comment comment2 = new Comment(content:"comment 2 here", user: user, post: post);
+
+        and: "we save the 2 comments"
+        postService.savePost(post)
+        userService.saveUser(user)
+        comment1 = commentService.saveComment(comment1)
+        comment2 = commentService.saveComment(comment2)
+
+        when: "we delete the first comment"
+        commentService.deleteComment(comment1.getId())
+
+        and: "requesting for all comments of this post"
+        ArrayList<Comment> comments = user.getComments();
+
+        then: "the result references 1 post"
+        comments.size() == 1
+
+    }
 }
