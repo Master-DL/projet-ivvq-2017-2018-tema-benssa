@@ -36,6 +36,7 @@ public class User {
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany
+    @JsonIgnore
     private List<Like> likes = new ArrayList<>();
 
     public User(){}
@@ -104,5 +105,9 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public void addLike(Like like){
+        likes.add(like);
     }
 }

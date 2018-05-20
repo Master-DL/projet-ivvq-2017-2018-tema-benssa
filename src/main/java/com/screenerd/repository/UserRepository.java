@@ -1,7 +1,6 @@
 package com.screenerd.repository;
 
 import com.screenerd.domain.User;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User,Long> {
-   void deleteById(Long id);
    User findByLoginAndPassword(String login, String password);
    User findById(Long id);
 }

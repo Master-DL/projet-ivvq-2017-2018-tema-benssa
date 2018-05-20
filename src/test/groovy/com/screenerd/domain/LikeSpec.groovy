@@ -1,8 +1,5 @@
 package com.screenerd.domain
 
-import com.screenerd.domain.Like
-import com.screenerd.domain.Post
-import com.screenerd.domain.User
 import spock.lang.Specification
 
 import javax.validation.Validation

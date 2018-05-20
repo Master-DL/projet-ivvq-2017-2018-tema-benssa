@@ -30,8 +30,8 @@ class CommentSpec extends Specification {
         validator.validate(comment).empty
 
         where:
-        unContent   | unUser          | unPost
-        "commentaire"    | new User() | new Post()
+        unContent        | unUser          | unPost
+        "commentaire"    | new User()      | new Post()
 
     }
 
@@ -45,10 +45,10 @@ class CommentSpec extends Specification {
         !validator.validate(comment).empty
 
         where:
-        unContent   | unUser       | unPost
-        null    | new User()   | new Post()
-        "commentaire"    | null   | new Post()
+        unContent        | unUser       | unPost
+        null             | new User()   | new Post()
+        "commentaire"    | null         | new Post()
         "commentaire"    | new User()   | null
-        "c"    | new User()   | null
+        "c"              | new User()   | null
     }
 }

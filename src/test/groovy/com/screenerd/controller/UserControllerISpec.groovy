@@ -10,6 +10,8 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import spock.lang.Specification
 
+
+
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerISpec extends Specification{
 
@@ -18,6 +20,7 @@ class UserControllerISpec extends Specification{
     @Autowired
     private UserRepository userRepository;
 
+
     def "test add valid user"(){
         when: "when the addUser url is triggered with valid input for user"
         byte [] avatar = [1,2]
@@ -25,7 +28,7 @@ class UserControllerISpec extends Specification{
         map.add("login","login")
         map.add("password","password")
         map.add("avatar",avatar)
-        User user = restTemplate.postForObject("/api/v1/newUser",map,User.class)
+        User user = restTemplate.postForObject("/api/v1/user",map,User.class)
 
         then: "the user is created"
         user.id != null
@@ -33,17 +36,18 @@ class UserControllerISpec extends Specification{
         user.password == "password"
         user.avatar == avatar
     }
-    void "test delete user"(Long id) {
 
-        when: "user delete"
-        restTemplate.delete("/api/v1/newUser/${id}")
+    void "test delete user"() {
+        given: "a valid saved user "
+        User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
+        userRepository.save(user)
 
-        then: "it is true of the database"
-        userRepository.findOne(id)
+        when: "user is deleted"
+        restTemplate.delete("/api/v1/user/${user.id}")
 
-        where:
-        id|_
-        1 |_
+        then: "the user is deleted from database"
+        !userRepository.findOne(user.id)
+
     }
 
 }

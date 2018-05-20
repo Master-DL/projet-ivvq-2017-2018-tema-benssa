@@ -16,6 +16,7 @@ public class PostService {
     @Autowired private PostRepository postRepository;
     @Autowired private UserService userService;
 
+
     public Post savePost(Post post) {
         if (post == null)
             throw new IllegalArgumentException("Post cannot be null");
@@ -26,6 +27,7 @@ public class PostService {
             author.getPosts().add(post);
         }
         return postRepository.save(post);
+
     }
 
     public void deletePost(Long id) {
