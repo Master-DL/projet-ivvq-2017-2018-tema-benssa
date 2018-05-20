@@ -37,4 +37,16 @@ class UserServiceISpec extends Specification {
         and: "the user has still a null id"
         thomas.id == null
     }
+
+    def "retrieve an already added user" () {
+        given: "a User that has already been added"
+        User user = new User(login: "thomas", password: "123456",avatar: "")
+        user = userService.saveUser(user)
+
+        when: "we request the user"
+        User retrievedUser = userService.findUser(user.id)
+
+        then: "the user id is correct"
+        retrievedUser.id == user.id
+    }
 }

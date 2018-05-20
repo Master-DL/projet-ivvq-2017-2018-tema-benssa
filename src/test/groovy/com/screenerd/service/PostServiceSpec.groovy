@@ -15,16 +15,16 @@ class PostServiceSpec extends Specification {
 
     PostService postService
     PostRepository postRepository
-    UserRepository userRepository
+    UserService userService
     User user
     Post post
 
     void setup() {
         postRepository = Mock()
-        userRepository = Mock()
+        userService = Mock()
         postService = new PostService()
         postService.postRepository = postRepository
-        postService.userRepository = userRepository
+        postService.userService = userService
     }
 
     def "check the type of the repository"() {

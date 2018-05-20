@@ -4,8 +4,10 @@ import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
 import com.screenerd.service.PostService
 import com.screenerd.service.UserService
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
+@Transactional
 class PostControllerSpec extends Specification {
 
     PostService postService

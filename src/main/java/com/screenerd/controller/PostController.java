@@ -5,7 +5,10 @@ import com.screenerd.domain.User;
 import com.screenerd.service.PostService;
 import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 public class PostController {
@@ -20,13 +23,18 @@ public class PostController {
     public Post addPost(@RequestParam(value = "idUser") Long idUser,
                         @RequestParam(value = "image") byte[] image,
                         @RequestParam(value = "imageFormat") String imageFormat,
-                        @RequestParam(value = "description") String description) {
+                        @RequestParam(value = "description") String description) throws Exception {
+        byte [] avatar = {1,2};
         User user = userService.findUser(idUser);
-        return postService.savePost(new Post(user,image,imageFormat,description));
+        if (user == null)
+            System.out.println("MERDE");
+        Post post = new Post(user, avatar, imageFormat, description);
+        return postService.savePost(post);
     }
 
     @RequestMapping(value = "api/v1/deletePost/{id}", method = RequestMethod.DELETE)
     public void deletePost(@PathVariable("id") Long id) {
         postService.deletePost(id);
     }
+
 }
