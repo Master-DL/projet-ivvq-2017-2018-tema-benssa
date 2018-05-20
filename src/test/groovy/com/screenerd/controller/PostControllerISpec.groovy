@@ -14,7 +14,6 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import spock.lang.Specification
 
-@ContextConfiguration
 @Transactional
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostControllerISpec extends Specification {
@@ -46,5 +45,9 @@ class PostControllerISpec extends Specification {
 
         then: "the post is created"
         post != null
+        post.id != null
+        post.description == "description test"
+        post.image == avatar
+        post.imageFormat == "png"
     }
 }

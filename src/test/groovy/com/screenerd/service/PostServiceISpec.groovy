@@ -59,6 +59,7 @@ class PostServiceISpec extends Specification {
 
     def "findAll Posts" () {
         given: "one valid User"
+        def initSize = postService.findAllPosts().size()
         User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
 
         and: "two posts this user wrote"
@@ -73,11 +74,12 @@ class PostServiceISpec extends Specification {
         ArrayList<Post> posts = postService.findAllPosts()
 
         then: "the result references 2 posts"
-        posts.size() == 2
+        posts.size() == initSize + 2
     }
 
     def "delete one post" () {
         given: "one valid User"
+        def initSize = postService.findAllPosts().size()
         User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
 
         and: "two posts this user wrote"
@@ -95,7 +97,7 @@ class PostServiceISpec extends Specification {
         ArrayList<Post> posts = postService.findAllPosts()
 
         then: "the result references 1 post"
-        posts.size() == 1
+        posts.size() == initSize + 1
 
     }
 }

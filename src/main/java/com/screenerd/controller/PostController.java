@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.IllegalFormatException;
+
 
 @RestController
 public class PostController {
@@ -27,7 +29,7 @@ public class PostController {
         byte [] avatar = {1,2};
         User user = userService.findUser(idUser);
         if (user == null)
-            System.out.println("MERDE");
+            throw new IllegalArgumentException("User must exists");
         Post post = new Post(user, avatar, imageFormat, description);
         return postService.savePost(post);
     }

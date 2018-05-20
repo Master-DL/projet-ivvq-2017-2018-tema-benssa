@@ -5,12 +5,14 @@ import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
 import com.screenerd.repository.UserRepository
 import org.springframework.data.repository.CrudRepository
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 /**
  * Created by mathieukostiuk on 27/04/2018.
  */
 
+@Transactional
 class PostServiceSpec extends Specification {
 
     PostService postService

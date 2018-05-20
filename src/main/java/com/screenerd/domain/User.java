@@ -1,5 +1,6 @@
 package com.screenerd.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany
+    @JsonIgnore
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany

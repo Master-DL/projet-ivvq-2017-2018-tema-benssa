@@ -3,12 +3,14 @@ package com.screenerd.service
 import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 
 
 @SpringBootTest
+@Transactional
 class UserServiceISpec extends Specification {
     @Autowired UserService userService
 
