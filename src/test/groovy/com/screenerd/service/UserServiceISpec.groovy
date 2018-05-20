@@ -3,12 +3,14 @@ package com.screenerd.service
 import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 
 
 @SpringBootTest
+@Transactional
 class UserServiceISpec extends Specification {
     @Autowired UserService userService
 
@@ -36,5 +38,17 @@ class UserServiceISpec extends Specification {
 
         and: "the user has still a null id"
         thomas.id == null
+    }
+
+    def "retrieve an already added user" () {
+        given: "a User that has already been added"
+        User user = new User(login: "thomas", password: "123456",avatar: "")
+        user = userService.saveUser(user)
+
+        when: "we request the user"
+        User retrievedUser = userService.findUser(user.id)
+
+        then: "the user id is correct"
+        retrievedUser.id == user.id
     }
 }

@@ -3,11 +3,13 @@ package com.screenerd.service
 import com.screenerd.domain.User
 import com.screenerd.repository.UserRepository
 import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 /**
  * Created by mousa on 13/04/2018.
  */
+@Transactional
 class UserServiceSpec extends Specification {
     UserService userService
     UserRepository userRepository

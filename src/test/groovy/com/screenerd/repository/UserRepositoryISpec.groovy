@@ -3,6 +3,7 @@ package com.screenerd.repository
 import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 
@@ -10,6 +11,7 @@ import spock.lang.Specification
  * Created by telly on 17/05/18.
  */
 @SpringBootTest
+@Transactional
 class UserRepositoryISpec extends Specification{
 
     @Autowired

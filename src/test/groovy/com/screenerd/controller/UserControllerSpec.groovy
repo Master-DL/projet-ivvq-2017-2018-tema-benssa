@@ -2,9 +2,10 @@ package com.screenerd.controller
 
 import com.screenerd.repository.UserRepository
 import com.screenerd.service.UserService
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-
+@Transactional
 class UserControllerSpec extends Specification {
 
     UserController userController

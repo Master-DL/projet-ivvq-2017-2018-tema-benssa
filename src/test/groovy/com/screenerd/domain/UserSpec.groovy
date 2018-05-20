@@ -2,13 +2,10 @@ package com.screenerd.domain
 
 import com.screenerd.domain.User
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import javax.validation.Validation
 import javax.validation.Validator
 import javax.validation.ValidatorFactory
-
-
 
 /**
  * Created by sara on 09/03/2018.

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
     @Autowired private PostRepository postRepository;
-    @Autowired private UserRepository userRepository;
+    @Autowired private UserService userService;
 
 
     public Post savePost(Post post) {
@@ -23,11 +23,11 @@ public class PostService {
         User author = post.getUser();
         if (author != null) {
             if (author.getId() == null)
-                userRepository.save(author);
+                userService.saveUser(author);
             author.getPosts().add(post);
         }
-        postRepository.save(post);
-        return post;
+        return postRepository.save(post);
+
     }
 
     public void deletePost(Long id) {
@@ -47,5 +47,7 @@ public class PostService {
     public Iterable<Post> findAllPosts() {
         return this.postRepository.findAll();
     }
+
+    public Post findPostById(Long id) { return this.postRepository.findOne(id);}
 
 }

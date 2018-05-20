@@ -3,7 +3,6 @@ package com.screenerd.domain
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import javax.validation.Validation
 import javax.validation.Validator
