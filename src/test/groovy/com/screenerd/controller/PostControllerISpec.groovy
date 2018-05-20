@@ -30,7 +30,7 @@ class PostControllerISpec extends Specification {
         map.add("login","login")
         map.add("password","password")
         map.add("avatar",avatar)
-        User user = restTemplate.postForObject("/api/v1/newUser",map,User.class)
+        User user = restTemplate.postForObject("/api/v1/user",map,User.class)
 
         when: "when the addPost url is triggered with valid input for post"
 
@@ -56,7 +56,7 @@ class PostControllerISpec extends Specification {
         map.add("login","login")
         map.add("password","password")
         map.add("avatar",avatar)
-        User user = restTemplate.postForObject("/api/v1/newUser",map,User.class)
+        User user = restTemplate.postForObject("/api/v1/user",map,User.class)
 
         and: "two posts this user wrote"
         map = new LinkedMultiValueMap<String,Object>()
@@ -83,7 +83,7 @@ class PostControllerISpec extends Specification {
         map.add("login","login")
         map.add("password","password")
         map.add("avatar",avatar)
-        User user = restTemplate.postForObject("/api/v1/newUser",map,User.class)
+        User user = restTemplate.postForObject("/api/v1/user",map,User.class)
 
         and: "two posts this user wrote"
         map = new LinkedMultiValueMap<String,Object>()

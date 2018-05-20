@@ -27,11 +27,10 @@ public class PostController {
                         @RequestParam(value = "image") byte[] image,
                         @RequestParam(value = "imageFormat") String imageFormat,
                         @RequestParam(value = "description") String description) throws Exception {
-        byte [] avatar = {1,2};
         User user = userService.findUser(idUser);
         if (user == null)
             throw new IllegalArgumentException("User must exists");
-        Post post = new Post(user, avatar, imageFormat, description);
+        Post post = new Post(user, image, imageFormat, description);
         return postService.savePost(post);
     }
 
