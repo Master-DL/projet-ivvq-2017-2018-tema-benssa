@@ -7,9 +7,9 @@ import com.screenerd.repository.PostRepository
 import com.screenerd.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-import javax.transaction.Transactional
 import javax.validation.ConstraintViolationException
 
 /**
