@@ -5,9 +5,9 @@ import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-import javax.transaction.Transactional
 
 /**
  * Created by telly on 18/05/18.
