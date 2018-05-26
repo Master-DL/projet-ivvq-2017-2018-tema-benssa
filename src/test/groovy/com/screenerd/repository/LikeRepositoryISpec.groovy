@@ -24,10 +24,10 @@ class LikeRepositoryISpec extends Specification{
     PostRepository postRepository
 
     def "test save valid like"(){
-        given: "a valid saved user"
+        given: "a saved user"
         User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
         userRepository.save(user)
-        and: "a valid post"
+        and: "a saved post"
         Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
         postRepository.save(post)
         and: "a valid like"
@@ -55,5 +55,23 @@ class LikeRepositoryISpec extends Specification{
         fetchedLike.value == 1
         fetchedLike.user == user
         fetchedLike.post == post
+    }
+
+    def "test delete like"(){
+        given: "a valid saved user"
+        User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
+        userRepository.save(user)
+        and: "a valid post"
+        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
+        postRepository.save(post)
+        and: "a saved like"
+        Like like = new Like(1,user,post)
+        Like saved = likeRepository.save(like)
+
+        when: "the saved like is deleted"
+        likeRepository.delete(saved.id)
+
+        then: "the saved like no longer exists"
+        !likeRepository.findOne(saved.id)
     }
 }

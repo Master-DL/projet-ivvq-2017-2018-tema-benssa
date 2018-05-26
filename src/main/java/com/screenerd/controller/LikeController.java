@@ -7,10 +7,7 @@ import com.screenerd.repository.PostRepository;
 import com.screenerd.repository.UserRepository;
 import com.screenerd.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by telly on 18/05/18.
@@ -36,5 +33,11 @@ public class LikeController {
         }
         Like like = new Like(value,user,post);
         return likeService.saveLike(like);
+    }
+
+    @RequestMapping(value = "/api/v1/like/{id}",method = RequestMethod.POST)
+    public void deleteLike(@PathVariable("id") Long likeId,@RequestParam(value = "userId") Long userId){
+        System.out.println(likeId + " "+ userId);
+        likeService.deleteLike(likeId,userId);
     }
 }

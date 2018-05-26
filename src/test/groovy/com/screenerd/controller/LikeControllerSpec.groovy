@@ -27,17 +27,29 @@ class LikeControllerSpec extends Specification{
         likeController.postRepository = postRepository
     }
 
-    def "test add like"(){
-        given: "a user with the id exists"
+    def "test delegation add like to likeService"(){
+        given: "a user with the id 1 exists"
         userRepository.findOne(1) >> Mock(User)
         and: "a post with the id 1 exists"
         postRepository.findOne(1) >> Mock(Post)
 
-        when: "the add like URL is triggered"
+        when: "the add like is triggered"
         likeController.addLike(1,1,2)
 
         then: "the save is delegated to the likeService"
         1 * likeService.saveLike(_)
     }
 
+    def "test delegation of delete like to likeService"(){
+        given: "a like id"
+        Long likeId = 1
+        and: "a user Id"
+        Long userId = 1
+
+        when: "the delete like is triggered"
+        likeController.deleteLike(likeId,userId)
+
+        then: "the delete is delegated to the likeService"
+        1 * likeService.deleteLike(_,_)
+    }
 }

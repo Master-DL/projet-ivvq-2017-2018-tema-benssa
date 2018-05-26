@@ -34,4 +34,15 @@ public class LikeService {
         post.addLike(like);
         return like;
     }
+
+    public void deleteLike(Long likeId,Long userId){
+        Like toDelete = likeRepository.findOne(likeId);
+        if(toDelete == null){
+            throw new IllegalArgumentException("Like can not be null");
+        }
+        if(toDelete.getUser().getId() != userId){
+            throw new IllegalArgumentException("Only the owner can delete");
+        }
+        likeRepository.delete(likeId);
+    }
 }

@@ -26,7 +26,8 @@ class LikeControllerISpec extends Specification{
     TestRestTemplate restTemplate
     @Autowired
     InitializationService initializationService
-
+    @Autowired
+    LikeRepository likeRepository
 
     def "test add a valid like"(){
         given: "a saved user"
@@ -46,4 +47,13 @@ class LikeControllerISpec extends Specification{
         like.value == 1
     }
 
+    def "test delete a like"(){
+        when: "a like is deleted by the owner"
+        MultiValueMap<String,Long> map = new LinkedMultiValueMap<String,Long>()
+        map.add("userId",initializationService.sarah.id)
+        restTemplate.postForObject("/api/v1/like/${initializationService.sarahLovesFortnite.id}",map,Void.class)
+
+        then:"the like is deleted"
+        !likeRepository.findOne(initializationService.sarahLovesFortnite.id)
+    }
 }

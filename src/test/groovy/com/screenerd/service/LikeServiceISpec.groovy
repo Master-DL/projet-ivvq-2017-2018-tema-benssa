@@ -3,6 +3,7 @@ package com.screenerd.service
 import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
+import com.screenerd.repository.LikeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -21,6 +22,8 @@ class LikeServiceISpec extends Specification{
     LikeService likeService
     @Autowired
     InitializationService initializationService
+    @Autowired
+    LikeRepository likeRepository
 
    def "test save a null like"(){
         given: "a null like"
@@ -99,12 +102,50 @@ class LikeServiceISpec extends Specification{
         when: "the like is saved"
         likeService.saveLike(like)
 
-        then: "A validation exception is thrown"
+        then: "an exception is thrown"
         thrown IllegalArgumentException
 
         and: "the like has still a null id"
         like.id == null
     }
 
+    def "test delete like with the right user"(){
+        given: "a saved like Id"
+        Long likeId = initializationService.sarahLovesFortnite.id
+        and: "the id of the owner"
+        Long userId = initializationService.sarah.id
+
+        when: "the like with this id is deleted by the owner"
+        likeService.deleteLike(likeId,userId)
+
+        then: "the like is deleted"
+        !likeRepository.findOne(initializationService.sarahLovesFortnite.id)
+    }
+
+    def "test delete like with the wrong user"(){
+        given: "a saved like Id"
+        Long likeId = initializationService.sarahLovesFortnite.id
+        and: "the id of other user"
+        Long userId = initializationService.ben.id
+
+        when: "the like with this id is deleted by the owner"
+        likeService.deleteLike(likeId,userId)
+
+        then: "an exception is thrown"
+        thrown IllegalArgumentException
+        and: "the like still exists"
+        likeRepository.findOne(initializationService.sarahLovesFortnite.id)
+    }
+
+    def "test delete not saved like"(){
+        given: "a unsaved like Id"
+        Long likeId = Long.MAX_VALUE
+
+        when: "the like with this id is deleted"
+        likeService.deleteLike(likeId,null)
+
+        then: "an exception is thrown"
+        thrown IllegalArgumentException
+    }
 
 }
