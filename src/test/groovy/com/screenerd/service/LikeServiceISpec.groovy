@@ -55,7 +55,7 @@ class LikeServiceISpec extends Specification{
 
     def "test save a valid like with unsaved used and unsaved post"(){
         given: "a valid user"
-        User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
+        User user = new User(login: "login",password: "password",avatar: [1, 3, 6] as byte[])
         and: "a valid post"
         Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
         and: "a valid like"

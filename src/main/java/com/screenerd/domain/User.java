@@ -19,7 +19,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
 
-    @NotEmpty
+    @NotNull
+    @Size(min = 1)
     private String login;
 
     @NotNull @Size(min = 6)

@@ -3,8 +3,6 @@ package com.screenerd.controller;
 import com.screenerd.domain.User;
 import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -31,9 +29,10 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user){
-        User userUpdate = userService.saveUser(user);
-        return  new ResponseEntity<>(userUpdate, HttpStatus.OK);
+    @RequestMapping(value = "/api/v1/user/{id}",method = RequestMethod.PATCH)
+    public User updateUser(@PathVariable("id") Long id,
+                            @RequestParam(value = "password",required = false) String password,
+                            @RequestParam(value = "avatar",required = false) byte[] avatar){
+        return userService.updateUser(id, password, avatar);
     }
 }
