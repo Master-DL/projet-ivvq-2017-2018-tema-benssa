@@ -37,7 +37,6 @@ public class LikeController {
 
     @RequestMapping(value = "/api/v1/like/{id}",method = RequestMethod.POST)
     public void deleteLike(@PathVariable("id") Long likeId,@RequestParam(value = "userId") Long userId){
-        System.out.println(likeId + " "+ userId);
         likeService.deleteLike(likeId,userId);
     }
 }
