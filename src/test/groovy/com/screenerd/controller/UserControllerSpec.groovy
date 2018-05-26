@@ -1,37 +1,40 @@
 package com.screenerd.controller
 
-import com.screenerd.repository.UserRepository
 import com.screenerd.service.UserService
-import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-@Transactional
 class UserControllerSpec extends Specification {
 
     UserController userController
-    UserRepository userRepository
     UserService userService
-    byte[] avatar = [1,2]
 
     def setup(){
         userService = Mock()
-
         userController = new UserController()
         userController.userService = userService
     }
 
-    def "test add user"(){
-        when: "when the addUser url is triggered"
-        userController.addUser("login","password",avatar)
+    def "test delegation of add user to userService"(){
+        when: "the add user is called"
+        userController.addUser("login","password",[1,2] as byte[])
 
         then: "the save is delegated to the userService"
         1 * userService.saveUser(_)
     }
 
-    def "test delete user"() {
-        when: "the requte delete"
-        userController.deleteUser(1);
-        then: "the save is delegated to the userService"
+    def "test delegation of delete user to userService"() {
+        when: "the delete user is called"
+        userController.deleteUser(1)
+
+        then: "the delete is delegated to the userService"
         1 * userService.deleteUser(1)
+    }
+
+    def "test delegation of update user to userService"() {
+        when: "the update user is called"
+        userController.updateUser(1,"password",[1,2] as byte[])
+
+        then: "the update is delegated to the userService"
+        1 * userService.updateUser(1,"password",[1,2] as byte[])
     }
 }

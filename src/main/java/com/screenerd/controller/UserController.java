@@ -29,7 +29,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @RequestMapping(value = "/api/v1/user/{id}",method = RequestMethod.PATCH)
+    @RequestMapping(value = "/api/v1/user/update/{id}",method = RequestMethod.POST)
     public User updateUser(@PathVariable("id") Long id,
                             @RequestParam(value = "password",required = false) String password,
                             @RequestParam(value = "avatar",required = false) byte[] avatar){
