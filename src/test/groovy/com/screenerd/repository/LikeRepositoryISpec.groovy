@@ -18,12 +18,18 @@ class LikeRepositoryISpec extends Specification{
 
     @Autowired
     LikeRepository likeRepository
+    @Autowired
+    UserRepository userRepository
+    @Autowired
+    PostRepository postRepository
 
     def "test save valid like"(){
         given: "a valid saved user"
         User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
+        userRepository.save(user)
         and: "a valid post"
         Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
+        postRepository.save(post)
         and: "a valid like"
         Like like = new Like(1,user,post)
 
@@ -41,6 +47,9 @@ class LikeRepositoryISpec extends Specification{
 
         then: "the like exists"
         fetchedLike != null
+
+        and: "the like has an same Id as savedLike"
+        fetchedLike.id == savedLike.id
 
         and: "the like contains correct information"
         fetchedLike.value == 1

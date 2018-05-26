@@ -32,11 +32,11 @@ class LikeServiceSpec extends Specification{
     def "delegation of save of a like to likeRepository"(){
         given: "a like"
         Like like = Mock(Like){
-            getUser() >> Mock(User)
+            getUser() >> Mock(User){
+                getId() >> 1
+            }
             getPost() >> Mock(Post){
-                getUser() >> Mock(User){
-                    getPosts() >> []
-                }
+                getId() >> 1
             }
         }
 

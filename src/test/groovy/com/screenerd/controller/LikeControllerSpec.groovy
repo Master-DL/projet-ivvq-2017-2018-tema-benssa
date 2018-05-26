@@ -1,6 +1,7 @@
 package com.screenerd.controller
 
-import com.screenerd.domain.Like
+import com.screenerd.domain.Post
+import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
 import com.screenerd.repository.UserRepository
 import com.screenerd.service.LikeService
@@ -27,6 +28,11 @@ class LikeControllerSpec extends Specification{
     }
 
     def "test add like"(){
+        given: "a user with the id exists"
+        userRepository.findOne(1) >> Mock(User)
+        and: "a post with the id 1 exists"
+        postRepository.findOne(1) >> Mock(Post)
+
         when: "the add like URL is triggered"
         likeController.addLike(1,1,2)
 

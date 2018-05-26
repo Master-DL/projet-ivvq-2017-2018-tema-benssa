@@ -8,12 +8,12 @@ import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
 
-
 @SpringBootTest
 @Transactional
 class UserServiceISpec extends Specification {
 
     @Autowired UserService userService
+    @Autowired InitializationService initializationService
 
     def "test save a valid user"() {
         given: "a valid user"
@@ -43,42 +43,39 @@ class UserServiceISpec extends Specification {
 
     def "test retrieve an already added user" () {
         given: "a User that has already been added"
-        User user = new User(login: "thomas", password: "123456",avatar: [1,2,3] as byte[])
-        user = userService.saveUser(user)
+        User thomas = initializationService.thomas
 
         when: "we request the user"
-        User retrievedUser = userService.findUser(user.id)
+        User retrievedUser = userService.findUser(thomas.id)
 
         then: "the user id is correct"
-        retrievedUser.id == user.id
+        retrievedUser.id == thomas.id
     }
 
     def "test delete existing user"(){
         given: "a User that has already been added"
-        User user = new User(login: "thomas", password: "123456",avatar: [1,2,3] as byte[])
-        Long id = userService.saveUser(user).id
+        User thomas = initializationService.thomas
 
         when: "we delete the user"
-        userService.deleteUser(id)
+        userService.deleteUser(thomas.id)
 
         then: "the user no longer exists"
-        userService.findUser(id) == null
+        !userService.findUser(thomas.id)
     }
 
     def "test update existing user with valid password and avatar"(){
         given: "a User that has already been added"
-        User user = new User(login: "thomas", password: "123456",avatar: [1,2,3] as byte[])
-        Long id = userService.saveUser(user).id
+        User thomas = initializationService.thomas
         and: "a new valid password"
         String password = "newPassword"
         and: "a new valid avatar"
         byte [] avatar = [1,2,3,4] as byte []
 
         when: "we update the user"
-        User updatedUser = userService.updateUser(id,password,avatar)
+        User updatedUser = userService.updateUser(thomas.id,password,avatar)
 
         then: "the updated user has the correct id"
-        updatedUser.id == id
+        updatedUser.id == thomas.id
         and: "the new password"
         updatedUser.password == "newPassword"
         and: "the new avatar"
@@ -87,21 +84,20 @@ class UserServiceISpec extends Specification {
 
     def "test update existing user with invalid password"(){
         given: "a User that has already been added"
-        User user = new User(login: "thomas", password: "123456",avatar: [1,2,3] as byte[])
-        Long id = userService.saveUser(user).id
+        User thomas = initializationService.thomas
         and: "a new invalid password"
         String password = "a"
 
         when: "we update the user"
-        userService.updateUser(id,password,null)
+        userService.updateUser(thomas.id,password,null)
 
         then: "A validation exception is thrown"
         thrown ConstraintViolationException
     }
 
-    def "test update inexisting user"(){
-        given: "an inexisting user Id"
-        Long id = Long.MAX_VALUE
+    def "test update unsaved user"(){
+        given: "an unsaved user Id"
+        Long id = 4
         and: "a new valid password"
         String password = "newPassword"
         and: "a new valid avatar"

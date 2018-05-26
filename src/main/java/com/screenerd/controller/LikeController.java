@@ -31,6 +31,9 @@ public class LikeController {
                          @RequestParam(value = "value") int value){
         User user = userRepository.findOne(userId);
         Post post = postRepository.findOne(postId);
+        if(user == null || post == null){
+            throw new IllegalArgumentException("Can not save like with unsaved user/post");
+        }
         Like like = new Like(value,user,post);
         return likeService.saveLike(like);
     }

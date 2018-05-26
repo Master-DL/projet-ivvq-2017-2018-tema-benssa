@@ -66,7 +66,7 @@ class UserServiceSpec extends Specification {
         userRepository.findOne(1) >> Mock(User)
 
         when: "the user is updated"
-        User user = userService.updateUser(id,password,null)
+        userService.updateUser(id,password,null)
 
         then: "a save is delegated to the userRepository"
         1 * userRepository.saveAndFlush(_)

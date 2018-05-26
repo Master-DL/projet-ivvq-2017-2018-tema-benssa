@@ -29,7 +29,7 @@ public class UserService {
     public User updateUser(Long id,String password,byte[] avatar){
         User fetchedUser = userRepository.findOne(id);
         if(fetchedUser == null){
-            throw new IllegalArgumentException("Id user must exist");
+            throw new IllegalArgumentException("User must exist");
         }
         if(password != null){
             fetchedUser.setPassword(password);

@@ -4,6 +4,11 @@ import com.screenerd.domain.Comment;
 import com.screenerd.domain.Like;
 import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
+import com.screenerd.repository.CommentRepository;
+import com.screenerd.repository.LikeRepository;
+import com.screenerd.repository.PostRepository;
+import com.screenerd.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class InitializationService {
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private LikeRepository likeRepository;
 
     private User thomas;
     private User sarah;
@@ -32,38 +46,43 @@ public class InitializationService {
     private Like benHatesCat;
     private Like benLovesPes;
 
-    private void initThomas(){
+    public void initUsers(){
         thomas = new User("thomas","password",new byte[]{1,2,3});
-    }
-
-    private void initSarah(){
+        userRepository.save(thomas);
         sarah = new User("sarah","HarS12a0",new byte[]{2,5,6,7});
+        userRepository.save(sarah);
+        ben = new User("benji", "rienACirer", new byte[]{2, 5, 6, 7});
+        userRepository.save(ben);
     }
 
-    private void initBen() {
-        ben = new User("benji", "rienACirer", new byte[]{2, 5, 6, 7});
-    }
 
     public void initPosts(){
-        initThomas();
         fortniteByThomas = new Post(thomas,new byte[]{1,2,3},"png","mate ton top1 sur fortnite");
+        postRepository.save(fortniteByThomas);
         pesByThomas = new Post(thomas,new byte[]{1,0,6,8},"png","controle ,frappe enchainee");
-        initSarah();
+        postRepository.save(pesByThomas);
         catBySarah = new Post(sarah,new byte[]{1,2,9,5,7},"png","il est mimi mon chaton");
+        postRepository.save(catBySarah);
     }
 
     public void initComments(){
-        initBen();
         benOnFortnite = new Comment("un jeu de barbare",ben,fortniteByThomas);
+        commentRepository.save(benOnFortnite);
         thomasOnCat = new Comment("on en veut pas de ton chat ici.Gamer Only",thomas,catBySarah);
+        commentRepository.save(thomasOnCat);
         benOnCat = new Comment("trop relou ces chats",ben,catBySarah);
+        commentRepository.save(benOnCat);
     }
 
     public void initLikes(){
         sarahLovesFortnite = new Like(5,sarah,fortniteByThomas);
+        likeRepository.save(sarahLovesFortnite);
         benHatesFortnite = new Like(1,ben,fortniteByThomas);
+        likeRepository.save(benHatesFortnite);
         benHatesCat = new Like(1,ben,catBySarah);
+        likeRepository.save(benHatesCat);
         benLovesPes = new Like(4,ben,pesByThomas);
+        likeRepository.save(benLovesPes);
     }
 
     public User getThomas() {

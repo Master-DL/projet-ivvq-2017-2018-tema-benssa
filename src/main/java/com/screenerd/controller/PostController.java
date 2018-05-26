@@ -5,12 +5,8 @@ import com.screenerd.domain.User;
 import com.screenerd.service.PostService;
 import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.IllegalFormatException;
 
 
 @RestController
