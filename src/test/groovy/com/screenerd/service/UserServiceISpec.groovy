@@ -97,7 +97,7 @@ class UserServiceISpec extends Specification {
 
     def "test update unsaved user"(){
         given: "an unsaved user Id"
-        Long id = 4
+        Long id = Long.MAX_VALUE
         and: "a new valid password"
         String password = "newPassword"
         and: "a new valid avatar"
