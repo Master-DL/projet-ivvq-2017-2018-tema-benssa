@@ -54,6 +54,9 @@ public class Post {
         likes.add(like);
     }
 
+    public void removeLike(Like like){
+        likes.remove(like);
+    }
     public void addComment(Comment comment) {
         comments.add(comment);
     }
@@ -106,12 +109,5 @@ public class Post {
         this.description = description;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
-    }
 
 }

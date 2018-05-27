@@ -43,13 +43,11 @@ class LikeControllerSpec extends Specification{
     def "test delegation of delete like to likeService"(){
         given: "a like id"
         Long likeId = 1
-        and: "a user Id"
-        Long userId = 1
 
         when: "the delete like is triggered"
-        likeController.deleteLike(likeId,userId)
+        likeController.deleteLike(likeId)
 
         then: "the delete is delegated to the likeService"
-        1 * likeService.deleteLike(_,_)
+        1 * likeService.deleteLike(likeId)
     }
 }

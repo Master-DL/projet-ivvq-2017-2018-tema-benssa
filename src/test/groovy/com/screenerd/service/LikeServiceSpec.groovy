@@ -48,15 +48,14 @@ class LikeServiceSpec extends Specification{
     }
 
     def "test delegation of delete a like to likeRepository"(){
-        given: "a saved like with id 1 and user Id 1"
+        given: "an existing like with id 1"
         likeRepository.findOne(1) >> Mock(Like){
-            getUser() >> Mock(User){
-                getId() >> 1
-            }
+            getUser() >> Mock(User)
+            getPost() >> Mock(Post)
         }
 
-        when: "the like is deleted by giving the right Id and user Id"
-        likeService.deleteLike(1,1)
+        when: "the like is deleted"
+        likeService.deleteLike(1)
 
         then: "the delete is delegated to the likeRepository"
         1 * likeRepository.delete(1)

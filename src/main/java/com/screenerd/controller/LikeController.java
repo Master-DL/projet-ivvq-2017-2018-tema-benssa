@@ -35,8 +35,8 @@ public class LikeController {
         return likeService.saveLike(like);
     }
 
-    @RequestMapping(value = "/api/v1/like/{id}",method = RequestMethod.POST)
-    public void deleteLike(@PathVariable("id") Long likeId,@RequestParam(value = "userId") Long userId){
-        likeService.deleteLike(likeId,userId);
+    @RequestMapping(value = "/api/v1/like/{id}",method = RequestMethod.DELETE)
+    public void deleteLike(@PathVariable("id") Long likeId){
+        likeService.deleteLike(likeId);
     }
 }

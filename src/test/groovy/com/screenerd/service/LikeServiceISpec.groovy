@@ -109,40 +109,27 @@ class LikeServiceISpec extends Specification{
         like.id == null
     }
 
-    def "test delete like with the right user"(){
+    def "test delete like a saved like"(){
         given: "a saved like Id"
         Long likeId = initializationService.sarahLovesFortnite.id
-        and: "the id of the owner"
-        Long userId = initializationService.sarah.id
 
-        when: "the like with this id is deleted by the owner"
-        likeService.deleteLike(likeId,userId)
+        when: "the like with this id is deleted"
+        likeService.deleteLike(likeId)
 
-        then: "the like is deleted"
+        then: "the like no longer exists"
         !likeRepository.findOne(initializationService.sarahLovesFortnite.id)
+        and: "the like is removed from Sarah Like"
+        !initializationService.sarah.likes.contains(initializationService.sarahLovesFortnite)
+        and: "the like is removed from Fortnite Likes"
+        !initializationService.fortniteByThomas.likes.contains(initializationService.sarahLovesFortnite)
     }
 
-    def "test delete like with the wrong user"(){
-        given: "a saved like Id"
-        Long likeId = initializationService.sarahLovesFortnite.id
-        and: "the id of other user"
-        Long userId = initializationService.ben.id
-
-        when: "the like with this id is deleted by the owner"
-        likeService.deleteLike(likeId,userId)
-
-        then: "an exception is thrown"
-        thrown IllegalArgumentException
-        and: "the like still exists"
-        likeRepository.findOne(initializationService.sarahLovesFortnite.id)
-    }
-
-    def "test delete not saved like"(){
+    def "test delete like an unsaved like"(){
         given: "a unsaved like Id"
         Long likeId = Long.MAX_VALUE
 
         when: "the like with this id is deleted"
-        likeService.deleteLike(likeId,null)
+        likeService.deleteLike(likeId)
 
         then: "an exception is thrown"
         thrown IllegalArgumentException

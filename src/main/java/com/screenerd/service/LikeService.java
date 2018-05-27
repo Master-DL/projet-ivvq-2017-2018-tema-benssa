@@ -35,14 +35,13 @@ public class LikeService {
         return like;
     }
 
-    public void deleteLike(Long likeId,Long userId){
+    public void deleteLike(Long likeId){
         Like toDelete = likeRepository.findOne(likeId);
         if(toDelete == null){
-            throw new IllegalArgumentException("Like can not be null");
+            throw new IllegalArgumentException("Can not delete inexisting like");
         }
-        if(toDelete.getUser().getId() != userId){
-            throw new IllegalArgumentException("Only the owner can delete");
-        }
+        toDelete.getUser().removeLike(toDelete);
+        toDelete.getPost().removeLike(toDelete);
         likeRepository.delete(likeId);
     }
 }

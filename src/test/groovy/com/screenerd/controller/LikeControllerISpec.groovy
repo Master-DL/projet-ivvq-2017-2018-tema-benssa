@@ -48,10 +48,8 @@ class LikeControllerISpec extends Specification{
     }
 
     def "test delete a like"(){
-        when: "a like is deleted by the owner"
-        MultiValueMap<String,Long> map = new LinkedMultiValueMap<String,Long>()
-        map.add("userId",initializationService.ben.id)
-        restTemplate.postForObject("/api/v1/like/${initializationService.benHatesFortnite.id}",map,Void.class)
+        when: "a like is deleted"
+        restTemplate.delete("/api/v1/like/${initializationService.benHatesFortnite.id}",Void.class)
 
         then:"the like is deleted"
         !likeRepository.findOne(initializationService.benHatesFortnite.id)
