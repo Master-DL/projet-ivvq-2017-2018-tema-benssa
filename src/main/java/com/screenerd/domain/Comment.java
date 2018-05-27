@@ -67,6 +67,23 @@ public class Comment {
     public void setPost(Post post){
     	this.post = post;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        if(content != null? !content.equals(comment.content): comment.content!=null) return false;
+        if(post != null? !post.equals(comment.post): comment.post!=null) return false;
+        return user!=null? user.equals(comment.user): comment.user == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = content!=null?content.hashCode():0;
+        result = 31 * result + (post!=null? post.hashCode() :0);
+        result = 31 * result + (user!=null? user.hashCode() :0);
+        return result;
+    }
 }
 

@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -109,5 +110,23 @@ public class Post {
         this.description = description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        if(image != null? !Arrays.equals(image,post.image): post.image!=null) return false;
+        if(imageFormat != null? !imageFormat.equals(post.imageFormat): post.imageFormat!=null) return false;
+        if(description != null? !description.equals(post.description): post.description!=null) return false;
+        return user != null? user.equals(post.user): post.user == null;
+    }
 
+    @Override
+    public int hashCode() {
+        int result = image!=null? Arrays.hashCode(image): 0;
+        result = 31 * result + (imageFormat!=null? imageFormat.hashCode(): 0);
+        result = 31 * result + (description!=null? description.hashCode(): 0);
+        result = 31 * result + (user!=null? user.hashCode(): 0);
+        return result;
+    }
 }

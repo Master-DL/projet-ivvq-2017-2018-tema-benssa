@@ -2,10 +2,16 @@ package com.screenerd.service
 
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
+import com.screenerd.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
+
+import javax.validation.ConstraintViolationException
 
 /**
  * Created by mathieukostiuk on 27/04/2018.
@@ -16,104 +22,99 @@ import spock.lang.Specification
 class PostServiceISpec extends Specification {
 
     @Autowired PostService postService
-
+    @Autowired InitializationService initializationService
+    @Autowired PostRepository postRepository
 
     def "test save a valid post"() {
-        given: "a user"
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[]);
-
+        given: "a saved user"
+        User ben = initializationService.ben
         and: "a valid post"
-        Post post = new Post(user,[0, 0, 0, 0, 0] as byte[], "test", "test");
+        Post post = new Post(ben,[0, 0, 0, 0, 0] as byte[], "test", "test")
 
         when: "the post is saved"
         postService.savePost(post)
 
         then: "the post has an id after been saved"
         post.id != null
-
-        and: "the user test has also an id"
-        user.id != null
-
-        and: "the user test has a post"
-        user.getPosts().size() == 1
-        user.getPosts().first().getDescription() == post.getDescription()
-
+        and: "the user has the post"
+        ben.posts.contains(post)
     }
 
-    def "test a non valid post" () {
-        given: "a non valid post"
-        Post post = new Post(null,[0, 0, 0, 0, 0] as byte[], "test", "test")
+    def "test save a non valid post" () {
+        given: "a saved user"
+        User ben = initializationService.ben
+        and: "a non valid post"
+        Post post = new Post(ben,null, "test", "test")
 
         when: "the post is saved"
         postService.savePost(post)
 
         then: "a validation exception is thrown"
-        thrown javax.validation.ConstraintViolationException
-
+        thrown ConstraintViolationException
         and: "post has no ID"
         !post.getId()
     }
 
-    def "findAll Posts" () {
-        given: "one valid User"
-        def initSize = postService.findAllPosts().size()
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+    def "test save null post"() {
+        when: "a null post is saved"
+        postService.savePost(null)
 
-        and: "two posts this user wrote"
-        Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
-        Post post2 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test2", "test2")
+        then: "an illegal argument exception is thrown"
+        thrown IllegalArgumentException
+    }
 
-        and: "we save the 2 posts"
-        postService.savePost(post1)
-        postService.savePost(post2)
+    def "test find posts for the first page" () {
+        given: "a pageable for the first ten posts"
+        Pageable pageable = new PageRequest(0,10)
 
         when: "requesting for all posts"
-        ArrayList<Post> posts = postService.findAllPosts()
+        Page<Post> page = postService.findPosts(pageable)
 
-        then: "the result references 2 posts"
-        posts.size() == initSize + 2
+        then: "the total number of posts is 4 same as initialization Service number of post"
+        page.totalElements == 4
+        and: "the result references these 4 posts "
+        page.numberOfElements == 4
+        and: "the result contains all posts from initialization Service"
+        page.content.contains(initializationService.fortniteByThomas)
+        page.content.contains(initializationService.pesByThomas)
+        page.content.contains(initializationService.catBySarah)
+        page.content.contains(initializationService.fifaByBen)
     }
 
-    def "delete one post" () {
-        given: "one valid User"
-        def initSize = postService.findAllPosts().size()
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+    def "test find posts for the second page" () {
+        given: "a pageable for the posts from 10 to 19"
+        Pageable pageable = new PageRequest(1, 10)
 
-        and: "two posts this user wrote"
-        Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
-        Post post2 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test2", "test2")
+        when: "requesting for all posts"
+        Page<Post> page = postService.findPosts(pageable)
 
-        and: "we save the 2 posts"
-        post1 = postService.savePost(post1)
-        post2 = postService.savePost(post2)
-
-        when: "we delete the first post"
-        postService.deletePost(post1.getId())
-
-        and: "requesting for all posts"
-        ArrayList<Post> posts = postService.findAllPosts()
-
-        then: "the result references 1 post"
-        posts.size() == initSize + 1
-
+        then: "the total number of posts is 4"
+        page.totalElements == 4
+        and: "the result references 0 posts"
+        page.numberOfElements == 0
     }
 
-    def "retrieve one post with its id" () {
-        given: "one valid user"
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+    def "test delete existing post" () {
+        given: "a saved post"
+        Post post = initializationService.fortniteByThomas
 
-        and: "a post this user wrote"
-        Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
+        when: "we delete this post"
+        postService.deletePost(post.id)
 
-        and: "this post is saved in the repo"
-        post1 = postService.savePost(post1)
-        def id = post1.getId()
+        then: "the post no longer exists"
+        !postRepository.findOne(post.id)
+        and: "the post is removed from thomas posts"
+        !initializationService.thomas.posts.contains(post)
+    }
 
-        when: "we request this post with its id"
-        def retrivedPost = postService.findPostById(id)
+    def "test delete unsaved post" () {
+        given: "a unsaved post Id"
+        Long postId = Long.MAX_VALUE
 
-        then: "the retrievedPost is not null and has the same description"
-        retrivedPost != null
-        retrivedPost.description == post1.description
+        when: "we delete this post"
+        postService.deletePost(postId)
+
+        then: "an exception is thrown"
+        thrown IllegalArgumentException
     }
 }

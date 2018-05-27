@@ -56,4 +56,22 @@ public class Like {
     public int getValue() {
         return value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass()!= o.getClass()) return false;
+        Like like = (Like) o;
+        if(value!=like.value) return false;
+        if(post != null? !post.equals(like.post): post!=null) return false;
+        return user!=null? user.equals(like.user): like.user == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value;
+        result = 31 * result + (post != null? post.hashCode(): 0);
+        result = 31 * result + (user != null? user.hashCode(): 0);
+        return result;
+    }
 }

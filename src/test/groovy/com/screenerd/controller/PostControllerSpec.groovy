@@ -1,9 +1,9 @@
 package com.screenerd.controller
 
 import com.screenerd.domain.User
-import com.screenerd.repository.PostRepository
 import com.screenerd.service.PostService
 import com.screenerd.service.UserService
+import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
@@ -12,31 +12,30 @@ class PostControllerSpec extends Specification {
 
     PostService postService
     PostController postController
-    PostRepository postRepository
     UserService userService
     User user
 
     def setup() {
         postService = Mock()
-        userService = Mock(UserService) {
-            findUser(1) >> Mock(User)
-        }
-        postRepository = Mock()
+        userService = Mock(UserService)
         user = Mock()
         postController = new PostController()
         postController.postService = postService
         postController.userService = userService
     }
 
-    def "test add post" () {
-        when: "the addPost Url is triggered"
-        postController.addPost(1,[0, 0, 0, 0, 0] as byte[], "test", "test")
+    def "test delegation of add post to Post Service" () {
+        given: "a saved user with Id 1"
+        userService.findUser(1) >> Mock(User)
+
+        when: "the addPost  is triggered"
+        postController.addPost(1,[0, 0, 0, 0, 0] as byte[], "png", "test")
 
         then: "the save is delegated to the PostService"
         1 * postService.savePost(_)
     }
 
-    def "test delete post" () {
+    def "test delegation of delete post to Post Service" () {
         when: "the request delete post is sent"
         postController.deletePost(1)
 
@@ -44,19 +43,12 @@ class PostControllerSpec extends Specification {
         1 * postService.deletePost(_)
     }
 
-    def "test findOnePost" () {
-        when: "the request findOnePost is sent"
-        postController.findPostById(1)
 
-        then: "the erquest is delegated to the post service"
-        1 * postService.findPostById(_)
-    }
-
-    def "test findAllPost" () {
+    def "test delegation of findPosts to Post Service" () {
         when: "the request findAllPosts is sent"
-        postController.findAllPosts()
+        postController.findPosts(Mock(Pageable))
 
-        then: "the request is delegated by the post service"
-        1 * postService.findAllPosts()
+        then: "the request is delegated to the post service"
+        1 * postService.findPosts(_)
     }
 }

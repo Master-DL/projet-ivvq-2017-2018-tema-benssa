@@ -3,42 +3,36 @@ package com.screenerd.service
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
-import org.springframework.data.repository.CrudRepository
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.PagingAndSortingRepository
 import spock.lang.Specification
 
 /**
  * Created by mathieukostiuk on 27/04/2018.
  */
 
-@Transactional
 class PostServiceSpec extends Specification {
 
     PostService postService
     PostRepository postRepository
-    UserService userService
     User user
     Post post
 
     void setup() {
         postRepository = Mock()
-        userService = Mock()
         postService = new PostService()
         postService.postRepository = postRepository
-        postService.userService = userService
     }
 
     def "check the type of the repository"() {
-        expect: "the repository is a Crud Repository"
-        postRepository instanceof CrudRepository
+        expect: "the repository is a Paging And Sorting Repository"
+        postRepository instanceof PagingAndSortingRepository
     }
 
-    def "test save of a Post in the repository"() {
+    def "test save of post is delegated to the post Repository"() {
         given: "a post"
         def post = Mock(Post) {
-            getUser() >> Mock(User) {
-                getPosts() >> []
-            }
+            getUser() >> Mock(User)
         }
 
         when: "the post is saved"
@@ -48,60 +42,24 @@ class PostServiceSpec extends Specification {
         1 * postRepository.save(post)
     }
 
-    def "test find all Posts"() {
-        when: "requesting for all posts"
-        postService.findAllPosts()
+    def "test find posts by page is delegated to the post Repository"() {
+        when: "requesting for posts with a page"
+        postService.findPosts(Mock(Pageable))
 
         then: "the request is delegated to the repository"
-        1 * postRepository.findAll()
+        1 * postRepository.findAll(_)
     }
 
-    def "test delete a post" () {
-        given: "the repo has one post"
-        post = Mock(Post) {
-            getUser() >> Mock(User) {
-                getPosts() >> Mock(ArrayList) {
-                    remove(post) >> post
-                }
-
-            }
-            getId() >> 1
+    def "test delete a post is delegated to the post Repository" () {
+        given: "the repo has one post with id 1"
+        postRepository.findOne(1) >> Mock(Post){
+            getUser() >> Mock(User)
         }
-        postService.postRepository = Mock(PostRepository) {
-            findOne(1) >> post
-        }
-
-        and: "the post is saved"
-        postService.savePost(post)
-        def id = post.getId()
 
         when: "we delete the post"
-        postService.deletePost(id)
+        postService.deletePost(1)
 
         then: "the deletion is delegated to the repository"
-        1 * postService.postRepository.delete(id)
-    }
-
-    def "get one post with its id" () {
-        given: "a post"
-        post = Mock(Post) {
-            getUser() >> Mock(User) {
-                getPosts() >> Mock(ArrayList) {
-                    remove(post) >> post
-                }
-
-            }
-            getId() >> 1
-        }
-
-        and: "the post is saved in the repo"
-        postService.savePost(post)
-        def id = post.getId()
-
-        when: "we request this post"
-        postService.findPostById(id)
-
-        then: "the request is delegated to the repository"
-        1 * postService.postRepository.findOne(id)
+        1 * postService.postRepository.delete(1)
     }
 }

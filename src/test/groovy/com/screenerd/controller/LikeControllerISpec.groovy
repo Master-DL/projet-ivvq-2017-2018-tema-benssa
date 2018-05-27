@@ -51,7 +51,7 @@ class LikeControllerISpec extends Specification{
         when: "a like is deleted"
         restTemplate.delete("/api/v1/like/${initializationService.benHatesFortnite.id}",Void.class)
 
-        then:"the like is deleted"
+        then:"the like no longer exists"
         !likeRepository.findOne(initializationService.benHatesFortnite.id)
     }
 }

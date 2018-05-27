@@ -36,6 +36,7 @@ public class InitializationService {
     private Post fortniteByThomas;
     private Post pesByThomas;
     private Post catBySarah;
+    private Post fifaByBen;
 
     private Comment benOnFortnite;
     private Comment thomasOnCat;
@@ -63,6 +64,8 @@ public class InitializationService {
         postRepository.save(pesByThomas);
         catBySarah = new Post(sarah,new byte[]{1,2,9,5,7},"png","il est mimi mon chaton");
         postRepository.save(catBySarah);
+        fifaByBen = new Post(ben,new byte[]{1,2,9,5,7},"png","Messi est demoniaque");
+        postRepository.save(fifaByBen);
     }
 
     public void initComments(){
@@ -136,4 +139,6 @@ public class InitializationService {
     public Like getBenLovesPes() {
         return benLovesPes;
     }
+
+    public Post getFifaByBen(){return fifaByBen;}
 }

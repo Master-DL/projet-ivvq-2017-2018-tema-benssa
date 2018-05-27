@@ -26,11 +26,8 @@ class LikeServiceISpec extends Specification{
     LikeRepository likeRepository
 
    def "test save a null like"(){
-        given: "a null like"
-        Like like = null
-
-        when: "the null like is saved"
-        likeService.saveLike(like)
+        when: "a null like is saved"
+        likeService.saveLike(null)
 
         then: "a illegal argument exception is thrown"
         thrown IllegalArgumentException
@@ -73,41 +70,6 @@ class LikeServiceISpec extends Specification{
         pesByThomas.likes.contains(like)
     }
 
-    def "test save a valid like with unsaved used and saved post"(){
-        given: "a unsaved user"
-        User user = new User(login: "login",password: "password",avatar: [1, 3, 6] as byte[])
-        and: "a saved post"
-        Post pesByThomas = initializationService.pesByThomas
-        and: "a valid like"
-        Like like = new Like(1,user,pesByThomas)
-
-        when: "the like is saved"
-        likeService.saveLike(like)
-
-        then: "A validation exception is thrown"
-        thrown IllegalArgumentException
-
-        and: "the like has still a null id"
-        like.id == null
-    }
-
-    def "test save a valid like with saved used and unsaved post"(){
-        given: "a saved user"
-        User sarah = initializationService.sarah
-        and: "a unsaved post"
-        Post post = new Post(sarah,[1, 3, 6] as byte[],"png","un post")
-        and: "a valid like"
-        Like like = new Like(1,sarah,post)
-
-        when: "the like is saved"
-        likeService.saveLike(like)
-
-        then: "an exception is thrown"
-        thrown IllegalArgumentException
-
-        and: "the like has still a null id"
-        like.id == null
-    }
 
     def "test delete like a saved like"(){
         given: "a saved like Id"

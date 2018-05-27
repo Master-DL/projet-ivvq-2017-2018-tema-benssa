@@ -39,14 +39,15 @@ class UserControllerISpec extends Specification{
     }
 
     def "test delete user"() {
-        given: "a valid saved user "
-        User ben = initializationService.ben
+        given: "a valid saved user"
+        User user = new User("todelete","password",[1,2,3] as byte[])
+        User saved = userRepository.save(user)
 
         when: "user is deleted"
-        restTemplate.delete("/api/v1/user/${ben.id}")
+        restTemplate.delete("/api/v1/user/${saved.id}")
 
         then: "the user is deleted from database"
-        !userRepository.findOne(ben.id)
+        !userRepository.findOne(saved.id)
     }
 
 
