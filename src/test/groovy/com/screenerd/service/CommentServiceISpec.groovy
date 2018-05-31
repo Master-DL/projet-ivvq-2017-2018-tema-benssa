@@ -28,7 +28,7 @@ class CommentServiceISpec extends Specification {
         given: "a user"
         User user = new User(login: "login",password: "password",avatar: [1,3,6]);
         and: "a post"
-        Post post = new Post(user: user, description: "GG", image: [0, 0, 0, 0, 0] as byte[] , imageFormat: "png");
+        Post post = new Post(user: user, description: "GG", image: [0, 0, 0, 0, 0] as byte[] , imageFormat: "png", popularity: 1);
         and: "a comment"
         Comment comment = new Comment(content:"a comment", user: user, post: post);
 
@@ -70,7 +70,7 @@ class CommentServiceISpec extends Specification {
         given: "a user"
         User user = new User(login: "login",password: "password",avatar: [1,3,6]);
         and: "a post"
-        Post post = new Post(user: user, description: "GG", image: [0, 0, 0, 0, 0] as byte[] , imageFormat: "png");
+        Post post = new Post(user: user, description: "GG", image: [0, 0, 0, 0, 0] as byte[] , imageFormat: "png", popularity: 1);
         and: "a comment"
         Comment comment = new Comment(content:"ceci est un commentaire", user: user, post: post);
 

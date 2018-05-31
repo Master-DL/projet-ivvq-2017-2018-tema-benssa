@@ -1,6 +1,7 @@
 package com.screenerd.service;
 
 
+import com.screenerd.domain.Like;
 import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
 import com.screenerd.repository.PostRepository;
@@ -48,6 +49,10 @@ public class PostService {
 
     public Page<Post> findPage(Pageable pageable) {
         return postRepository.findAll(pageable);
+    }
+
+    public Page<Post> findPageOrderedByPopularity(Pageable pageable) {
+        return postRepository.findAllByOrderByPopularityDesc(pageable);
     }
 
     public Post findPostById(Long id) { return this.postRepository.findOne(id);}

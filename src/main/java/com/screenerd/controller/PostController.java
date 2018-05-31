@@ -1,5 +1,6 @@
 package com.screenerd.controller;
 
+import com.screenerd.domain.Like;
 import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
 import com.screenerd.service.PostService;
@@ -47,4 +48,8 @@ public class PostController {
         return postService.findPostById(id);
     }
 
+    @RequestMapping(value = "api/v1/post/popularity", method = RequestMethod.GET)
+    public Page<Post> findPostsOrderedByPopularity(Pageable p) {
+        return postService.findPageOrderedByPopularity(p);
+    }
 }

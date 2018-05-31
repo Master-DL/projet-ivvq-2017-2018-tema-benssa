@@ -4,6 +4,7 @@ import com.screenerd.domain.Like;
 import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
 import com.screenerd.repository.LikeRepository;
+import com.screenerd.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ public class LikeService {
 
     private @Autowired
     LikeRepository likeRepository;
+    private @Autowired
+    PostRepository postRepository;
 
 
     public Like saveLike(Like like){
@@ -26,6 +29,7 @@ public class LikeService {
         likeRepository.save(like);
         user.addLike(like);
         post.addLike(like);
+        postRepository.save(post);
         return like;
     }
 

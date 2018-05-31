@@ -1,5 +1,6 @@
 package com.screenerd.service
 
+import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +23,8 @@ class PostServiceISpec extends Specification {
     PostService postService
     @Autowired
     InitializationService initializationService
+    @Autowired
+    LikeService likeService;
 
 
     def "test save a valid post"() {
@@ -132,5 +135,42 @@ class PostServiceISpec extends Specification {
         then: "the retrievedPost is not null and has the same description"
         retrivedPost != null
         retrivedPost.description == post1.description
+    }
+
+    def "retrieve posts ordered by popularity" () {
+        given: "two posts"
+        def post1 = initializationService.getPesByThomas()
+        def post2 = initializationService.catBySarah
+
+        and: "three likes"
+        def like1 = new Like(1,initializationService.ben, post2)
+        def like2 = new Like(1, initializationService.ben, post2)
+        def like3 = new Like(4, initializationService.ben, post1)
+        def like4 = new Like(5, initializationService.ben, post2)
+
+        and: "we add one like with value =1"
+        likeService.saveLike(like3)
+        post1.addLike(like3)
+
+        and: "we add three like with values = 1, 1, 5"
+        likeService.saveLike(like1)
+        likeService.saveLike(like2)
+        likeService.saveLike(like4)
+        post2.addLike(like1)
+        post2.addLike(like2)
+        post2.addLike(like4)
+
+        when: "we retrieve the posts ordered by popularity"
+        Pageable pageable = new PageRequest(0, 10)
+        Page<Post> posts = postService.findPageOrderedByPopularity(pageable)
+
+        then: "the first post is post2"
+        println(post2.getPopularity())
+        println(post1.getPopularity())
+
+        posts.asList().get(0).getPopularity() == post1.getPopularity()
+
+        and: "the second post is post1"
+        posts.asList().get(1).id == post2.id
     }
 }

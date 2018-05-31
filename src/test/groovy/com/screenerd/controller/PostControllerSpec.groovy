@@ -61,4 +61,12 @@ class PostControllerSpec extends Specification {
         then: "the request is delegated by the post service"
         1 * postService.findPage(_)
     }
+
+    def "test get posts ordered by popularity" () {
+        when: "the request get posts ordered by popularity"
+        postController.findPostsOrderedByPopularity(Mock(Pageable))
+
+        then: "the request is delegated to the post service"
+        1 * postService.findPageOrderedByPopularity(_)
+    }
 }

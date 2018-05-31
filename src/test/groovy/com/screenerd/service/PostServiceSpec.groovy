@@ -1,5 +1,6 @@
 package com.screenerd.service
 
+import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
@@ -105,4 +106,28 @@ class PostServiceSpec extends Specification {
         then: "the request is delegated to the repository"
         1 * postService.postRepository.findOne(id)
     }
+
+    def "retrieve posts ordered by popularity" () {
+        given: "a post"
+        post = Mock(Post) {
+            getUser() >> Mock(User) {
+                getPosts() >> Mock(ArrayList) {
+                    remove(post) >> post
+                }
+
+            }
+            getId() >> 1
+        }
+
+        and: "the post is saved in the repo"
+        postService.savePost(post)
+        def id = post.getId()
+
+        when: "we request posts oredered by popularity"
+        postService.findPageOrderedByPopularity(Mock(Pageable))
+
+        then: "the request is delegated to the repository"
+        1 * postService.postRepository.findAllByOrderByPopularityDesc(_)
+    }
+
 }

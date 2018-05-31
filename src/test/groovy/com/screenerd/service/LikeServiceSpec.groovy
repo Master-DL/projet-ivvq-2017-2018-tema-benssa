@@ -4,6 +4,7 @@ import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.LikeRepository
+import com.screenerd.repository.PostRepository
 import org.springframework.data.repository.CrudRepository
 import spock.lang.Specification
 
@@ -19,8 +20,9 @@ class LikeServiceSpec extends Specification{
 
 
     def setup(){
-        likeRepository = Mock()
+        likeRepository = Mock() {}
         likeService = new LikeService()
+        likeService.postRepository = Mock(PostRepository)
         likeService.likeRepository = likeRepository
     }
 

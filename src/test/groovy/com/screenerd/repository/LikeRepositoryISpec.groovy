@@ -28,7 +28,7 @@ class LikeRepositoryISpec extends Specification{
         User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
         userRepository.save(user)
         and: "a saved post"
-        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
+        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png", popularity: 1)
         postRepository.save(post)
         and: "a valid like"
         Like like = new Like(1,user,post)
@@ -62,7 +62,7 @@ class LikeRepositoryISpec extends Specification{
         User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
         userRepository.save(user)
         and: "a valid post"
-        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
+        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png", popularity: 1)
         postRepository.save(post)
         and: "a saved like"
         Like like = new Like(1,user,post)

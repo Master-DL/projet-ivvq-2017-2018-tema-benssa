@@ -6,6 +6,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +45,11 @@ public class Post {
     @JsonIgnore
     private  List<Like> likes = new ArrayList<>();
 
+    @NotNull
+    @Min(1)
+    @Max(5)
+    public Integer popularity;
+
     public Post(){}
 
     public Post(User u, byte[] i, String iF, String d) {
@@ -50,10 +57,12 @@ public class Post {
         this.image = i;
         this.description = d;
         this.imageFormat = iF;
+        this.popularity = 1;
     }
 
     public void addLike(Like like) {
         likes.add(like);
+        refreshPopularity();
     }
 
     public void removeLike(Like like){
@@ -91,8 +100,13 @@ public class Post {
         return likes;
     }
 
+    public Integer getPopularity() {
+        return popularity;
+    }
+
     public void setId(Long id) {
         this.id = id;
+
     }
 
     public void setImage(byte[] image) {
@@ -134,5 +148,13 @@ public class Post {
     @Override
     public String toString() {
         return id + " " + description +" " + Arrays.hashCode(image) + " " +imageFormat+" "+user;
+    }
+
+    private void refreshPopularity() {
+        int sum = 0;
+        for (Like l : this.likes)
+            sum = sum + l.getValue();
+        this.popularity = sum/this.likes.size();
+        this.popularity = sum/this.likes.size();
     }
 }

@@ -20,10 +20,10 @@ class PostSpec extends Specification {
         validator = factory.getValidator();
     }
 
-    def 'test valid post' (User aUser, String aDescription, byte[] aImage, String aFormat) {
+    def 'test valid post' (User aUser, String aDescription, byte[] aImage, String aFormat, Integer aPopularity) {
 
         given: "the creation of a new post"
-        Post post = new Post(user: aUser, description: aDescription, image: aImage, imageFormat: aFormat)
+        Post post = new Post(user: aUser, description: aDescription, image: aImage, imageFormat: aFormat, popularity: aPopularity)
 
         expect: "the post is valid"
         validator.validate(post).empty
@@ -33,11 +33,11 @@ class PostSpec extends Specification {
         !post.likes
 
         where:
-        aUser      | aDescription | aImage                        |    aFormat
-        new User() | "GG"         |   [0, 0, 0, 0, 0] as byte[]   |    "png"
-        new User() | "ENCULE"     |   [0, 0, 0, 0, 0] as byte[]   |    "png"
-        new User() | "LOL"        |   [0, 0, 0, 0, 0] as byte[]   |    "png"
-        new User() | 'P'          |   [0, 0, 0, 0, 0] as byte[]   |    "png"
+        aUser      | aDescription | aImage                        |    aFormat | aPopularity
+        new User() | "GG"         |   [0, 0, 0, 0, 0] as byte[]   |    "png"   |    1
+        new User() | "ENCULE"     |   [0, 0, 0, 0, 0] as byte[]   |    "png"   |    1
+        new User() | "LOL"        |   [0, 0, 0, 0, 0] as byte[]   |    "png"   |    1
+        new User() | 'P'          |   [0, 0, 0, 0, 0] as byte[]   |    "png"   |    1
 
     }
 
@@ -81,4 +81,27 @@ class PostSpec extends Specification {
         then: "list of comments has one more comment"
         post.comments.size() == nb + 1
     }
+
+    def "check popularity after adding two likes" () {
+        given: "a valid post"
+        Post post = new Post(user: new User(), description:  "Descritpion", image:[0, 0, 0, 0, 0] as byte[], imageFormat:  "png")
+
+
+        and: "two likes with different values"
+        def like1 = Mock(Like) {
+            getValue() >> 5
+        }
+        def like2 = Mock(Like) {
+            getValue() >> 1
+        }
+
+        when: "we add the likes to the post"
+        post.addLike(like1)
+        post.addLike(like2)
+
+        then: "the popularity of the post is the mean of the value of the two likes"
+        post.getPopularity() == ((5+1)/2)
+
+    }
+
 }
