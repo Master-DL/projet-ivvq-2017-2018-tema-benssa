@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public Boolean authenticate(String login, String password) {
-        User user = this.userRepository.findOneByLoginAndPassword(login,password);
+        User user = this.userRepository.findFirstByLoginAndPassword(login,password);
         return user!=null;
     }
 }

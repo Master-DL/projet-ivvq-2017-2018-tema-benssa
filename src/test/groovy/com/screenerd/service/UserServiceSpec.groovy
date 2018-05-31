@@ -77,6 +77,6 @@ class UserServiceSpec extends Specification {
         userService.authenticate("login","password")
 
         then: "the find user by login and password is delegated to the repository"
-        1 * userRepository.findOneByLoginAndPassword(_,_)
+        1 * userRepository.findFirstByLoginAndPassword(_,_)
     }
 }

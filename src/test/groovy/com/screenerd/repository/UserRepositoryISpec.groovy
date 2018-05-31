@@ -72,11 +72,11 @@ class UserRepositoryISpec extends Specification{
 
     def "test find by login and password existing user"(){
         given: "a saved user"
-        User user = new User(login: "login",password: "password",avatar: [1,3,6])
+        User user = new User(login: "testlogin",password: "testpassword",avatar: [1,3,6])
         userRepository.save(user)
 
         when: "the user is fetched by login an password"
-        User fetched = userRepository.findOneByLoginAndPassword(user.login,user.password)
+        User fetched = userRepository.findFirstByLoginAndPassword(user.login,user.password)
 
         then: "the user exists"
         fetched != null
@@ -86,7 +86,7 @@ class UserRepositoryISpec extends Specification{
 
     def "test find by login and password inexisting user"(){
         when: "inexisting user is fetched"
-        User fetched = userRepository.findOneByLoginAndPassword("inexistingLogin","inexistingPassword")
+        User fetched = userRepository.findFirstByLoginAndPassword("inexistingLogin","inexistingPassword")
 
         then: "the fetched is null"
         fetched == null
