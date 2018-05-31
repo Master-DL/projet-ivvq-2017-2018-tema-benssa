@@ -43,7 +43,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/api/v1/user/authenticate", method = RequestMethod.GET)
-    public String authenticateUser(@PathVariable("login") String login, @PathVariable("password") String password) {
-        return userService.authenticate(login,password).toString();
+    public Boolean authenticateUser(@RequestParam(value = "login") String login,
+                                   @RequestParam(value = "password") String password) {
+        return userService.authenticate(login,password);
     }
 }

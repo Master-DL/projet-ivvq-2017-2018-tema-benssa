@@ -1,5 +1,6 @@
 package com.screenerd.controller
 
+import com.screenerd.domain.User
 import com.screenerd.service.UserService
 import spock.lang.Specification
 

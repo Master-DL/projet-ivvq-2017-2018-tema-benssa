@@ -76,7 +76,7 @@ class UserRepositoryISpec extends Specification{
         userRepository.save(user)
 
         when: "the user is fetched by login an password"
-        User fetched = userRepository.findByLoginAndPassword(user.login,user.password)
+        User fetched = userRepository.findOneByLoginAndPassword(user.login,user.password)
 
         then: "the user exists"
         fetched != null
@@ -86,7 +86,7 @@ class UserRepositoryISpec extends Specification{
 
     def "test find by login and password inexisting user"(){
         when: "inexisting user is fetched"
-        User fetched = userRepository.findByLoginAndPassword("inexistingLogin","inexistingPassword")
+        User fetched = userRepository.findOneByLoginAndPassword("inexistingLogin","inexistingPassword")
 
         then: "the fetched is null"
         fetched == null
