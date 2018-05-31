@@ -7,6 +7,8 @@ import com.screenerd.repository.PostRepository
 import com.screenerd.repository.UserRepository
 import com.screenerd.service.CommentService
 import com.screenerd.service.LikeService
+import com.screenerd.service.PostService
+import com.screenerd.service.UserService
 import spock.lang.Specification
 
 /**
@@ -16,28 +18,29 @@ class CommentControllerSpec extends Specification{
 
     CommentController commentController
     CommentService commentService
-    UserRepository userRepository
+    UserService userService
     PostRepository postRepository
 
     def setup(){
         commentService = Mock()
-        userRepository = Mock()
+        userService = Mock()
         postRepository = Mock()
         commentController = new CommentController()
         commentController.commentService = commentService
+        commentController.postRepository = postRepository
+        commentController.userService = userService
     }
 
     def "test add comment"(){
 
         given: "a user"
-        User user = new User(login: "login",password: "password",avatar: [1,3,6]);
-        User savedUser = userRepository.save(user);
+        userService.findUser(1) >> Mock(User)
+
         and: "a post"
-        Post post = new Post(user: user, description: "GG", image: [0, 0, 0, 0, 0] as byte[] , imageFormat: "png");
-        Post savedPost = postRepository.save(post);
+        postRepository.findOne(1) >> Mock(Post)
 
         when: "the add comment URL is triggered"
-        commentController.addComment(savedUser.getId(),savedPost.getId(),"ceci est un commentaire")
+        commentController.addComment(1,1,"ceci est un commentaire")
 
         then: "the save is delegated to the commentService"
         1 * commentService.saveComment(_)
