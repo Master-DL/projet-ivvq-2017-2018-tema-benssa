@@ -6,6 +6,7 @@ import com.screenerd.service.InitializationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.ResponseEntity
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import spock.lang.Specification
@@ -99,4 +100,19 @@ class UserControllerISpec extends Specification{
         updatedUser.avatar == [1,0,3] as byte[]
     }
 
+    def "test authentication of saved user"(){
+        given: "a login of existing user"
+        String login = initializationService.thomas.login
+        and: "a password of this user"
+        String password = initializationService.thomas.password
+
+        when: "authentication is done with this login and password"
+        MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
+        map.add("login",login)
+        map.add("password",password)
+        String res = restTemplate.getForObject("/api/v1/user/authenticate",String.class,map)
+
+        then: "authentication succed"
+        res == "True"
+    }
 }

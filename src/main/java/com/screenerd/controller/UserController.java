@@ -3,7 +3,13 @@ package com.screenerd.controller;
 import com.screenerd.domain.User;
 import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Created by mousa on 27/04/2018.
@@ -34,5 +40,10 @@ public class UserController {
                             @RequestParam(value = "password",required = false) String password,
                             @RequestParam(value = "avatar",required = false) byte[] avatar){
         return userService.updateUser(id, password, avatar);
+    }
+
+    @RequestMapping(value = "/api/v1/user/authenticate", method = RequestMethod.GET)
+    public String authenticateUser(@PathVariable("login") String login, @PathVariable("password") String password) {
+        return userService.authenticate(login,password).toString();
     }
 }

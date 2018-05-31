@@ -70,4 +70,26 @@ class UserRepositoryISpec extends Specification{
         fetcheUser.password == "newPassword"
     }
 
+    def "test find by login and password existing user"(){
+        given: "a saved user"
+        User user = new User(login: "login",password: "password",avatar: [1,3,6])
+        userRepository.save(user)
+
+        when: "the user is fetched by login an password"
+        User fetched = userRepository.findByLoginAndPassword(user.login,user.password)
+
+        then: "the user exists"
+        fetched != null
+        and: "the fetched is same as saved"
+        fetched == user
+    }
+
+    def "test find by login and password inexisting user"(){
+        when: "inexisting user is fetched"
+        User fetched = userRepository.findByLoginAndPassword("inexistingLogin","inexistingPassword")
+
+        then: "the fetched is null"
+        fetched == null
+    }
+
 }

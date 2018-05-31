@@ -40,4 +40,9 @@ public class UserService {
         userRepository.saveAndFlush(fetchedUser);
         return fetchedUser;
     }
+
+    public Boolean authenticate(String login, String password) {
+        User user = this.userRepository.findByLoginAndPassword(login,password);
+        return user!=null;
+    }
 }

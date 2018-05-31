@@ -37,4 +37,12 @@ class UserControllerSpec extends Specification {
         then: "the update is delegated to the userService"
         1 * userService.updateUser(1,"password",[1,2] as byte[])
     }
+
+    def "test delegation of authentication to the userService"(){
+        when: "the authenticate is called"
+        userController.authenticateUser("login","password")
+
+        then: "the authentication is delegated to the userService"
+        1 * userService.authenticate("login","password")
+    }
 }
