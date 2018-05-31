@@ -3,28 +3,29 @@ package com.screenerd.service
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
-import com.screenerd.repository.UserRepository
 import org.springframework.data.repository.CrudRepository
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 /**
  * Created by mathieukostiuk on 27/04/2018.
  */
 
+@Transactional
 class PostServiceSpec extends Specification {
 
     PostService postService
     PostRepository postRepository
-    UserRepository userRepository
+    UserService userService
     User user
     Post post
 
     void setup() {
         postRepository = Mock()
-        userRepository = Mock()
+        userService = Mock()
         postService = new PostService()
         postService.postRepository = postRepository
-        postService.userRepository = userRepository
+        postService.userService = userService
     }
 
     def "check the type of the repository"() {
@@ -79,5 +80,28 @@ class PostServiceSpec extends Specification {
 
         then: "the deletion is delegated to the repository"
         1 * postService.postRepository.delete(id)
+    }
+
+    def "get one post with its id" () {
+        given: "a post"
+        post = Mock(Post) {
+            getUser() >> Mock(User) {
+                getPosts() >> Mock(ArrayList) {
+                    remove(post) >> post
+                }
+
+            }
+            getId() >> 1
+        }
+
+        and: "the post is saved in the repo"
+        postService.savePost(post)
+        def id = post.getId()
+
+        when: "we request this post"
+        postService.findPostById(id)
+
+        then: "the request is delegated to the repository"
+        1 * postService.postRepository.findOne(id)
     }
 }

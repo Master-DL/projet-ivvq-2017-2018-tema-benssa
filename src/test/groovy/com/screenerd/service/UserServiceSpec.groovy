@@ -2,7 +2,7 @@ package com.screenerd.service
 
 import com.screenerd.domain.User
 import com.screenerd.repository.UserRepository
-import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.jpa.repository.JpaRepository
 import spock.lang.Specification
 
 /**
@@ -18,23 +18,58 @@ class UserServiceSpec extends Specification {
         userService.userRepository = userRepository
     }
 
-    def "check type of utilisateurRepository"() {
-        expect: "utilisateurRepository is a Spring repository"
-        userRepository instanceof PagingAndSortingRepository
+    def "check type of userRepository"() {
+        expect: "userRepository is a JpaRepository"
+        userRepository instanceof JpaRepository
     }
 
 
-    def "test delegation of save of an Utilisateur to the repository"() {
-        given: "an utilisateur"
+    def "test delegation of save of an user to the repository"() {
+        given: "a user"
         def user = Mock(User)
 
-        when: "the utilisateur is saved"
-        userService.saveUser(user);
+        when: "the user is saved"
+        userService.saveUser(user)
 
-        then: "the save is delegated to the utilisateurRepository"
+        then: "the save is delegated to the userRepository"
         1 * userRepository.save(user)
     }
 
+    def "test delegation of find user to the repository" () {
+        given: "a user Id"
+        def id = 1
 
+        when: "the user is saved"
+        userService.findUser(id)
+
+        then: "the find is delegated to the userRepository"
+        1 * userRepository.findOne(id)
+    }
+
+    def "test delegation of delete user to the repository" () {
+        given: "a user Id"
+        def id = 1
+
+        when: "the user is deleted"
+        userService.deleteUser(id)
+
+        then: "the delete is delegated to the userRepository"
+        1 * userRepository.delete(id)
+    }
+
+    def "test delegation of update user to the repository" () {
+        given: "a user Id"
+        def id = 1
+        and: "a password"
+        def password = "newPassword"
+        and: "the user with this Id exists"
+        userRepository.findOne(1) >> Mock(User)
+
+        when: "the user is updated"
+        userService.updateUser(id,password,null)
+
+        then: "a save is delegated to the userRepository"
+        1 * userRepository.saveAndFlush(_)
+    }
 
 }

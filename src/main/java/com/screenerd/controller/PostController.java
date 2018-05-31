@@ -7,6 +7,8 @@ import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @RestController
 public class PostController {
 
@@ -20,13 +22,27 @@ public class PostController {
     public Post addPost(@RequestParam(value = "idUser") Long idUser,
                         @RequestParam(value = "image") byte[] image,
                         @RequestParam(value = "imageFormat") String imageFormat,
-                        @RequestParam(value = "description") String description) {
+                        @RequestParam(value = "description") String description) throws Exception {
         User user = userService.findUser(idUser);
-        return postService.savePost(new Post(user,image,imageFormat,description));
+        if (user == null)
+            throw new IllegalArgumentException("User must exists");
+        Post post = new Post(user, image, imageFormat, description);
+        return postService.savePost(post);
     }
 
     @RequestMapping(value = "api/v1/deletePost/{id}", method = RequestMethod.DELETE)
     public void deletePost(@PathVariable("id") Long id) {
         postService.deletePost(id);
     }
+
+    @RequestMapping(value = "api/v1/getPost", method = RequestMethod.GET)
+    public Iterable<Post> findAllPosts() {
+        return postService.findAllPosts();
+    }
+
+    @RequestMapping(value = "api/v1/getPost/{id}", method = RequestMethod.GET)
+    public Post findPostById(@PathVariable("id") Long id) {
+        return postService.findPostById(id);
+    }
+
 }

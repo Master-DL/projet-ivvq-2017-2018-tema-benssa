@@ -1,7 +1,6 @@
 package com.screenerd.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
 
-    @NotEmpty
+    @NotNull
+    @Size(min = 1)
     private String login;
 
     @NotNull @Size(min = 6)
@@ -32,6 +32,7 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany
+    @JsonIgnore
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany
@@ -39,6 +40,12 @@ public class User {
     private List<Like> likes = new ArrayList<>();
 
     public User(){}
+
+    public User(String login, String password, byte[] avatar) {
+        this.login = login;
+        this.password = password;
+        this.avatar = avatar;
+    }
 
     public byte[] getAvatar() {
         return avatar;
@@ -52,33 +59,8 @@ public class User {
         return likes;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    /**public void addComment(Comment comment) {
-        comments.add(comment);
-    }
-    public void addLike(Comment comment) {
-        comments.add(comment);
-    }**/
-
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
-
     public List<Post> getPosts() {
         return posts;
-    }
-
-    public User(String login, String password, byte[] avatar) {
-        this.login = login;
-        this.password = password;
-        this.avatar = avatar;
     }
 
     public String getLogin() {
@@ -101,12 +83,18 @@ public class User {
         this.password = password;
     }
 
-
     public Long getId() {
         return id;
     }
 
     public void addLike(Like like){
         likes.add(like);
+    }
+
+    public void removeLike(Like like){
+        likes.remove(like);
+    }
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 }

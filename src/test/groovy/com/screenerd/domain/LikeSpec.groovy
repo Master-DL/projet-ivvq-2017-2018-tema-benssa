@@ -1,9 +1,11 @@
 package com.screenerd.domain
 
 import spock.lang.Specification
+
 import javax.validation.Validation
 import javax.validation.Validator
 import javax.validation.ValidatorFactory
+
 /**
  * Created by telly on 06/04/18.
  */

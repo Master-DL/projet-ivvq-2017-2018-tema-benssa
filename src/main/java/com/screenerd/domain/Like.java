@@ -1,5 +1,8 @@
 package com.screenerd.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -20,12 +23,14 @@ public class Like {
     @Min(1)
     private int value;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
     public Like(){}

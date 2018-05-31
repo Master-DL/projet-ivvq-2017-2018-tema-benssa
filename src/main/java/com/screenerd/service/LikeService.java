@@ -19,13 +19,29 @@ public class LikeService {
 
     public Like saveLike(Like like){
         if(like == null){
-            throw new IllegalArgumentException("Null Like can not be saved");
+            throw new IllegalArgumentException("Like can not be null");
         }
         User user = like.getUser();
+        if(user.getId() == null){
+            throw new IllegalArgumentException("Like can not be saved with unsaved user");
+        }
         Post post = like.getPost();
+        if(post.getId() == null){
+            throw new IllegalArgumentException("Like can not be saved with unsaved Post");
+        }
         likeRepository.save(like);
         user.addLike(like);
         post.addLike(like);
         return like;
+    }
+
+    public void deleteLike(Long likeId){
+        Like toDelete = likeRepository.findOne(likeId);
+        if(toDelete == null){
+            throw new IllegalArgumentException("Can not delete inexisting like");
+        }
+        toDelete.getUser().removeLike(toDelete);
+        toDelete.getPost().removeLike(toDelete);
+        likeRepository.delete(likeId);
     }
 }

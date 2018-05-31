@@ -29,14 +29,14 @@ class LikeServiceSpec extends Specification{
         likeRepository instanceof CrudRepository
     }
 
-    def "delegation of save of a like to likeRepository"(){
+    def "test delegation of save of a like to likeRepository"(){
         given: "a like"
         Like like = Mock(Like){
-            getUser() >> Mock(User)
+            getUser() >> Mock(User){
+                getId() >> 1
+            }
             getPost() >> Mock(Post){
-                getUser() >> Mock(User){
-                    getPosts() >> []
-                }
+                getId() >> 1
             }
         }
 
@@ -45,5 +45,19 @@ class LikeServiceSpec extends Specification{
 
         then: "the save is delegated to the likeRepository"
         1 * likeRepository.save(like)
+    }
+
+    def "test delegation of delete a like to likeRepository"(){
+        given: "an existing like with id 1"
+        likeRepository.findOne(1) >> Mock(Like){
+            getUser() >> Mock(User)
+            getPost() >> Mock(Post)
+        }
+
+        when: "the like is deleted"
+        likeService.deleteLike(1)
+
+        then: "the delete is delegated to the likeRepository"
+        1 * likeRepository.delete(1)
     }
 }

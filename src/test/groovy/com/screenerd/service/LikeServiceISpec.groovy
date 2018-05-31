@@ -3,13 +3,12 @@ package com.screenerd.service
 import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
-import com.screenerd.repository.PostRepository
-import com.screenerd.repository.UserRepository
+import com.screenerd.repository.LikeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-import javax.transaction.Transactional
 import javax.validation.ConstraintViolationException
 
 /**
@@ -22,11 +21,9 @@ class LikeServiceISpec extends Specification{
     @Autowired
     LikeService likeService
     @Autowired
-    UserRepository userRepository
+    InitializationService initializationService
     @Autowired
-    PostRepository postRepository
-    @Autowired
-    PostService postService
+    LikeRepository likeRepository
 
    def "test save a null like"(){
         given: "a null like"
@@ -40,8 +37,12 @@ class LikeServiceISpec extends Specification{
     }
 
     def "test save non valid like"(){
-        given: "a non valid like"
-        Like like = new Like(2,null,null);
+        given: "a saved user"
+        User sarah = initializationService.sarah
+        and: "a saved post"
+        Post pesByThomas = initializationService.pesByThomas
+        and: "a non valid like"
+        Like like = new Like(10,sarah,pesByThomas)
 
         when: "the like is saved"
         likeService.saveLike(like)
@@ -53,52 +54,85 @@ class LikeServiceISpec extends Specification{
         like.id == null
     }
 
-    def "test save a valid like with unsaved used and unsaved post"(){
-        given: "a valid user"
-        User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
-        and: "a valid post"
-        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
-        and: "a valid like"
-        Like like = new Like(1,user,post)
+    def "test save  valid like with saved user and saved post"(){
+        given: "a saved user"
+        User sarah = initializationService.sarah
+        and: "a saved post"
+        Post pesByThomas = initializationService.pesByThomas
+        and: "a non valid like"
+        Like like = new Like(2,sarah,pesByThomas)
 
         when: "the like is saved"
         likeService.saveLike(like)
 
         then: "the like has an id"
         like.id != null
-        and: "the user has an id"
-        user.id != null
-        and: "the post has an id"
-        post.id != null
         and: "the user contains the like"
-        user.likes.contains(like)
+        sarah.likes.contains(like)
         and: "the post contains the like"
-        post.likes.contains(like)
+        pesByThomas.likes.contains(like)
     }
 
-    def "test save a valid like with saved used and saved post"(){
-        given: "a valid and saved user "
-        User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
-        userRepository.save(user)
-        and: "a valid and saved post"
-        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
-        postRepository.save(post)
+    def "test save a valid like with unsaved used and saved post"(){
+        given: "a unsaved user"
+        User user = new User(login: "login",password: "password",avatar: [1, 3, 6] as byte[])
+        and: "a saved post"
+        Post pesByThomas = initializationService.pesByThomas
         and: "a valid like"
-        Like like = new Like(1,user,post)
+        Like like = new Like(1,user,pesByThomas)
 
         when: "the like is saved"
         likeService.saveLike(like)
 
-        then: "the like has an id"
-        like.id != null
-        and: "the user has an id"
-        user.id != null
-        and: "the post has an id"
-        post.id != null
-        and: "the user contains the like"
-        user.likes.contains(like)
-        and: "the post contains the like"
-        post.likes.contains(like)
+        then: "A validation exception is thrown"
+        thrown IllegalArgumentException
+
+        and: "the like has still a null id"
+        like.id == null
+    }
+
+    def "test save a valid like with saved used and unsaved post"(){
+        given: "a saved user"
+        User sarah = initializationService.sarah
+        and: "a unsaved post"
+        Post post = new Post(sarah,[1, 3, 6] as byte[],"png","un post")
+        and: "a valid like"
+        Like like = new Like(1,sarah,post)
+
+        when: "the like is saved"
+        likeService.saveLike(like)
+
+        then: "an exception is thrown"
+        thrown IllegalArgumentException
+
+        and: "the like has still a null id"
+        like.id == null
+    }
+
+    def "test delete like a saved like"(){
+        given: "a saved like Id"
+        Long likeId = initializationService.sarahLovesFortnite.id
+
+        when: "the like with this id is deleted"
+        likeService.deleteLike(likeId)
+
+        then: "the like no longer exists"
+        !likeRepository.findOne(initializationService.sarahLovesFortnite.id)
+        and: "the like is removed from Sarah Like"
+        !initializationService.sarah.likes.contains(initializationService.sarahLovesFortnite)
+        and: "the like is removed from Fortnite Likes"
+        !initializationService.fortniteByThomas.likes.contains(initializationService.sarahLovesFortnite)
+    }
+
+    def "test delete like an unsaved like"(){
+        given: "a unsaved like Id"
+        Long likeId = Long.MAX_VALUE
+
+        when: "the like with this id is deleted"
+        likeService.deleteLike(likeId)
+
+        then: "an exception is thrown"
+        thrown IllegalArgumentException
     }
 
 }

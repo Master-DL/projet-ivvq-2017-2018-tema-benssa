@@ -23,6 +23,21 @@ public class UserService {
     }
 
     public User findUser(Long id){
-       return userRepository.findById(id);
+       return userRepository.findOne(id);
+    }
+
+    public User updateUser(Long id,String password,byte[] avatar){
+        User fetchedUser = userRepository.findOne(id);
+        if(fetchedUser == null){
+            throw new IllegalArgumentException("User must exist");
+        }
+        if(password != null){
+            fetchedUser.setPassword(password);
+        }
+        if(avatar != null){
+            fetchedUser.setAvatar(avatar);
+        }
+        userRepository.saveAndFlush(fetchedUser);
+        return fetchedUser;
     }
 }
