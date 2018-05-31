@@ -32,10 +32,12 @@ public class InitializationService {
     private User thomas;
     private User sarah;
     private User ben;
+    private User mark;
 
     private Post fortniteByThomas;
     private Post pesByThomas;
     private Post catBySarah;
+    private Post fifaByBen;
 
     private Comment benOnFortnite;
     private Comment thomasOnCat;
@@ -53,6 +55,8 @@ public class InitializationService {
         userRepository.save(sarah);
         ben = new User("benji", "rienACirer", new byte[]{2, 5, 6, 7});
         userRepository.save(ben);
+        mark = new User("markivert","passwOrdl",new byte[]{2, 5, 6, 7});
+        userRepository.save(mark);
     }
 
 
@@ -63,6 +67,8 @@ public class InitializationService {
         postRepository.save(pesByThomas);
         catBySarah = new Post(sarah,new byte[]{1,2,9,5,7},"png","il est mimi mon chaton");
         postRepository.save(catBySarah);
+        fifaByBen = new Post(ben,new byte[]{1,2,9,5,7},"png","Messi est demoniaque");
+        postRepository.save(fifaByBen);
     }
 
     public void initComments(){
@@ -95,6 +101,10 @@ public class InitializationService {
 
     public User getBen() {
         return ben;
+    }
+
+    public User getMark() {
+        return mark;
     }
 
     public Post getFortniteByThomas() {
@@ -136,4 +146,6 @@ public class InitializationService {
     public Like getBenLovesPes() {
         return benLovesPes;
     }
+
+    public Post getFifaByBen(){return fifaByBen;}
 }

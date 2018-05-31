@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -94,7 +95,38 @@ public class User {
     public void removeLike(Like like){
         likes.remove(like);
     }
+    public void addPost(Post post){
+        posts.add(post);
+    }
+
+    public void removePost(Post post){
+        posts.remove(post);
+    }
+
     public void addComment(Comment comment) {
         comments.add(comment);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        if(login!=null? !login.equals(user.login): user.login!=null) return false;
+        if(password!=null? !password.equals(user.password): user.password!=null) return false;
+        return avatar!=null? Arrays.equals(avatar,user.avatar): user.avatar==null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = login!=null?login.hashCode():0;
+        result = 31 * result + (password!=null? password.hashCode():0);
+        result = 31 * result + (avatar!=null? Arrays.hashCode(avatar):0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return id + " "+login + " "+password;
     }
 }

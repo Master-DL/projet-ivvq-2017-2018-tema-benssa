@@ -22,13 +22,7 @@ public class LikeService {
             throw new IllegalArgumentException("Like can not be null");
         }
         User user = like.getUser();
-        if(user.getId() == null){
-            throw new IllegalArgumentException("Like can not be saved with unsaved user");
-        }
         Post post = like.getPost();
-        if(post.getId() == null){
-            throw new IllegalArgumentException("Like can not be saved with unsaved Post");
-        }
         likeRepository.save(like);
         user.addLike(like);
         post.addLike(like);
