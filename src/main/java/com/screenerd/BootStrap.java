@@ -25,6 +25,5 @@ public class BootStrap {
         } catch (Exception e){
             e.printStackTrace();
         }
-
     }
 }
