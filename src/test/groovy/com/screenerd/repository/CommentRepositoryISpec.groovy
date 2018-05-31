@@ -51,4 +51,22 @@ class CommentRepositoryISpec extends Specification{
         fetchedComment.user == savedUser
         fetchedComment.post == savedPost
     }
+
+    def "test delete comment"(){
+        given: "a valid saved user"
+        User user = new User(login: "login",password: "password",avatar: [1, 3, 6])
+        userRepository.save(user)
+        and: "a valid saved post"
+        Post post = new Post(user: user,description: "Descritpion", image: [0, 0, 0, 0, 0] as byte[],  imageFormat: "png")
+        postRepository.save(post)
+        and: "a saved comment"
+        Comment comment = new Comment("ceci est un commentaire",user,post)
+        Comment savedComment = commentRepository.save(comment)
+
+        when: "the saved comment is deleted"
+        commentRepository.delete(comment.id)
+
+        then: "the saved comment no longer exists"
+        !commentRepository.findOne(comment.id)
+    }
 }
