@@ -16,8 +16,16 @@ public class CommentService {
 
     public Comment saveComment(Comment comment){
         Comment saved = commentRepository.save(comment);
-        //comment.getUser().getComments().add(saved);
-        //comment.getPost().addComment(saved);
+        comment.getUser().getComments().add(saved);
+        comment.getPost().addComment(saved);
         return saved;
     }
+
+    public void deleteComment(Long id){
+        Comment c = commentRepository.findOne(id);
+        c.getPost().getComments().remove(c);
+        c.getUser().getComments().remove(c);
+        commentRepository.delete(id);
+    }
+
 }

@@ -36,6 +36,7 @@ public class Post {
     private String description;
 
     @OneToMany
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany

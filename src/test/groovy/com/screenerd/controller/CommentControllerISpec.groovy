@@ -54,17 +54,16 @@ class CommentControllerISpec extends Specification{
         comment.content == "ceci est un commentaire"
     }
 
-    /**void "test delete comment"() {
+    void "test delete comment"() {
         given: "a valid saved comment "
         Comment comment = new Comment(content: "ceci est un commentaire",user: user,post: post)
         commentRepository.save(comment)
 
         when: "comment is deleted"
-        restTemplate.delete("/api/v1/deleteComment/${comment.id}")
+        restTemplate.delete("/api/v1/comment/${comment.id}")
 
         then: "the comment is deleted from database"
         !commentRepository.findOne(comment.id)
-
-    }*/
+    }
 
 }
