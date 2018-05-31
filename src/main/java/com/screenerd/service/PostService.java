@@ -23,12 +23,9 @@ public class PostService {
         if (post == null)
             throw new IllegalArgumentException("Post cannot be null");
         User author = post.getUser();
-        if (author != null) {
-            if (author.getId() == null)
-                userService.saveUser(author);
-            author.getPosts().add(post);
-        }
-        return postRepository.save(post);
+        postRepository.save(post);
+        author.addPost(post);
+        return post;
 
     }
 

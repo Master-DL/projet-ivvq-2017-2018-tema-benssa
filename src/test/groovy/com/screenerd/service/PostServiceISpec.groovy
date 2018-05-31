@@ -26,7 +26,7 @@ class PostServiceISpec extends Specification {
 
     def "test save a valid post"() {
         given: "a user"
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[]);
+        User user = initializationService.ben
 
         and: "a valid post"
         Post post = new Post(user,[0, 0, 0, 0, 0] as byte[], "test", "test");
@@ -94,7 +94,7 @@ class PostServiceISpec extends Specification {
 
     def "delete one post" () {
         given: "one valid User"
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+        User user = initializationService.ben
 
         and: "two posts this user wrote"
         Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
@@ -117,7 +117,7 @@ class PostServiceISpec extends Specification {
 
     def "retrieve one post with its id" () {
         given: "one valid user"
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+        User user = initializationService.ben
 
         and: "a post this user wrote"
         Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
