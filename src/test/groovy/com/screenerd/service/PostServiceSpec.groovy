@@ -3,6 +3,7 @@ package com.screenerd.service
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.CrudRepository
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
@@ -48,12 +49,12 @@ class PostServiceSpec extends Specification {
         1 * postRepository.save(post)
     }
 
-    def "test find all Posts"() {
+    def "test find a Page"() {
         when: "requesting for all posts"
-        postService.findAllPosts()
+        postService.findPage(Mock(Pageable))
 
         then: "the request is delegated to the repository"
-        1 * postRepository.findAll()
+        1 * postRepository.findAll(_)
     }
 
     def "test delete a post" () {

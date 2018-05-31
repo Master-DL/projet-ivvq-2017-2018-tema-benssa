@@ -68,7 +68,6 @@ class UserRepositoryISpec extends Specification{
 
         then: "the user contains the new password"
         fetcheUser.password == "newPassword"
-
     }
 
 }

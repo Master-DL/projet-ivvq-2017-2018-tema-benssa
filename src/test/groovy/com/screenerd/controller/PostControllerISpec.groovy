@@ -1,105 +1,87 @@
 package com.screenerd.controller
 
+import com.screenerd.PageHelper
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
+import com.screenerd.repository.PostRepository
+import com.screenerd.service.InitializationService
 import com.screenerd.service.PostService
 import com.screenerd.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import spock.lang.Specification
 
-@Transactional
+import javax.transaction.Transactional
+
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostControllerISpec extends Specification {
+
     @Autowired
     TestRestTemplate restTemplate
     @Autowired
-    private UserService userService;
+    private InitializationService initializationService
     @Autowired
-    private PostService postService;
+    private PostRepository postRepository
+
 
     def "test add a valid post" () {
-
-        given: "when the addUser url is triggered with valid input for user"
-        byte [] avatar = [1,2]
-        MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
-        map.add("login","login")
-        map.add("password","password")
-        map.add("avatar",avatar)
-        User user = restTemplate.postForObject("/api/v1/user",map,User.class)
+        given: "a saved user"
+        User ben = initializationService.ben
 
         when: "when the addPost url is triggered with valid input for post"
-
-        map = new LinkedMultiValueMap<String,Object>()
-        map.add("idUser",user.getId())
-        map.add("image",avatar)
+        MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
+        map.add("idUser",ben.getId())
+        map.add("image",[1,2] as byte[])
         map.add("imageFormat","png")
         map.add("description", "description test")
-        Post post = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
+        Post post = restTemplate.postForObject("/api/v1/post",map,Post.class)
 
         then: "the post is created"
-        post != null
         post.id != null
-        post.description == "description test"
-        post.image == avatar
-        post.imageFormat == "png"
+        postRepository.delete(post.id)//we delete it because testrestTemplate does not rollback transaction
     }
 
-    def "test findAllPosts" () {
-        given: "a repo with one user"
-        byte [] avatar = [1,2]
-        MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
-        map.add("login","login")
-        map.add("password","password")
-        map.add("avatar",avatar)
-        User user = restTemplate.postForObject("/api/v1/user",map,User.class)
+    def "test delete post"(){
+        given: "a saved post"
+        Post post = new Post(initializationService.ben,[1,2,3] as byte[],"png","une image")
+        Post saved = postRepository.save(post)
 
-        and: "two posts this user wrote"
-        map = new LinkedMultiValueMap<String,Object>()
-        map.add("idUser",user.getId())
-        map.add("image",avatar)
-        map.add("imageFormat","png")
-        map.add("description", "post1")
-        Post post1 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
-        map.add("description", "post2")
-        Post post2 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
+        when: "the post is deleted"
+        restTemplate.delete("/api/v1/post/${saved.id}")
 
-        when: "we request all the posts that are saved"
-        Iterable<Post> posts = restTemplate.getForObject("/api/v1/getPost", Iterable.class)
-
-        then: "we retrieve the two posts"
-        posts.asCollection().description.contains(post1.description)
-        posts.asCollection().description.contains(post2.description)
+        then: "the post no longer exists"
+        !postRepository.findOne(saved.id)
+        and: "the post is removed from ben posts"
+        !initializationService.ben.posts.contains(saved)
     }
 
-    def "test find one post" () {
-        given: "a repo with one user"
-        byte [] avatar = [1,2]
-        MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
-        map.add("login","login")
-        map.add("password","password")
-        map.add("avatar",avatar)
-        User user = restTemplate.postForObject("/api/v1/user",map,User.class)
+    def "test find first ten Posts" () {
+        when: "we request the first ten posts"
+        MultiValueMap<String, Integer> map = new LinkedMultiValueMap<String, Integer>()
+        map.add("page", 0)
+        map.add("size", 10)
+        PageHelper page = restTemplate.getForObject("/api/v1/post", PageHelper.class, map)
 
-        and: "two posts this user wrote"
-        map = new LinkedMultiValueMap<String,Object>()
-        map.add("idUser",user.getId())
-        map.add("image",avatar)
-        map.add("imageFormat","png")
-        map.add("description", "post1")
-        Post post1 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
-        map.add("description", "post2")
-        Post post2 = restTemplate.postForObject("/api/v1/newPost",map,Post.class)
-
-        when: "we request the second post"
-        Post retrievedPost = restTemplate.getForObject("/api/v1/getPost/"+post2.id, Post.class)
-
-        then: "the id of the retrieved post is correct"
-        retrievedPost != null
-        post2.id == retrievedPost.id
+        then: "the result references these 4 posts "
+        page.numberOfElements == 4
+        page.content.contains(initializationService.pesByThomas)
+        page.content.contains(initializationService.fortniteByThomas)
+        page.content.contains(initializationService.catBySarah)
+        page.content.contains(initializationService.fifaByBen)
     }
+
+    def "test find  posts from 10 to 19" () {
+        when: "we request the posts from 10 to 19"
+        MultiValueMap<String, Integer> map = new LinkedMultiValueMap<String, Integer>()
+        map.add("page", 1)
+        map.add("size", 10)
+        PageHelper page = restTemplate.getForObject("/api/v1/post", PageHelper.class, map)
+
+        then: "the total number of posts is 0"
+        page.totalElements == 0
+    }
+
 }

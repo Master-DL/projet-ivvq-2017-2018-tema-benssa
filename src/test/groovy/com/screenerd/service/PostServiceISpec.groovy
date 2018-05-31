@@ -4,6 +4,9 @@ import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
@@ -15,12 +18,15 @@ import spock.lang.Specification
 @Transactional
 class PostServiceISpec extends Specification {
 
-    @Autowired PostService postService
+    @Autowired
+    PostService postService
+    @Autowired
+    InitializationService initializationService
 
 
     def "test save a valid post"() {
         given: "a user"
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[]);
+        User user = initializationService.ben
 
         and: "a valid post"
         Post post = new Post(user,[0, 0, 0, 0, 0] as byte[], "test", "test");
@@ -54,30 +60,41 @@ class PostServiceISpec extends Specification {
         !post.getId()
     }
 
-    def "findAll Posts" () {
-        given: "one valid User"
-        def initSize = postService.findAllPosts().size()
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
-
-        and: "two posts this user wrote"
-        Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
-        Post post2 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test2", "test2")
-
-        and: "we save the 2 posts"
-        postService.savePost(post1)
-        postService.savePost(post2)
+    def "test find posts for the first page" () {
+        given: "a pageable for the first ten posts"
+        Pageable pageable = new PageRequest(0,10)
 
         when: "requesting for all posts"
-        ArrayList<Post> posts = postService.findAllPosts()
+        Page<Post> page = postService.findPage(pageable)
 
-        then: "the result references 2 posts"
-        posts.size() == initSize + 2
+        then: "the total number of posts is 4 same as initialization Service number of post"
+        page.totalElements == 4
+        and: "the result references these 4 posts "
+        page.numberOfElements == 4
+        and: "the result contains all posts from initialization Service"
+        page.content.contains(initializationService.fortniteByThomas)
+        page.content.contains(initializationService.pesByThomas)
+        page.content.contains(initializationService.catBySarah)
+        page.content.contains(initializationService.fifaByBen)
     }
+
+    def "test find posts for the second page" () {
+        given: "a pageable for the posts from 10 to 19"
+        Pageable pageable = new PageRequest(1, 10)
+
+        when: "requesting for all posts"
+        Page<Post> page = postService.findPage(pageable)
+
+        then: "the total number of posts is 4"
+        page.totalElements == 4
+        and: "the result references 0 posts"
+        page.numberOfElements == 0
+    }
+
 
     def "delete one post" () {
         given: "one valid User"
-        def initSize = postService.findAllPosts().size()
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+        User user = initializationService.ben
 
         and: "two posts this user wrote"
         Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
@@ -90,17 +107,17 @@ class PostServiceISpec extends Specification {
         when: "we delete the first post"
         postService.deletePost(post1.getId())
 
-        and: "requesting for all posts"
-        ArrayList<Post> posts = postService.findAllPosts()
+        and: "requesting for the post"
+        Post post = postService.findPostById(post1.getId())
 
         then: "the result references 1 post"
-        posts.size() == initSize + 1
+        post == null
 
     }
 
     def "retrieve one post with its id" () {
         given: "one valid user"
-        User user = new User("test", "testtesttesttesttest", [0, 0, 0, 0, 0] as byte[])
+        User user = initializationService.ben
 
         and: "a post this user wrote"
         Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
