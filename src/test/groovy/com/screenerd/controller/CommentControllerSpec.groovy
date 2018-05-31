@@ -40,7 +40,8 @@ class CommentControllerSpec extends Specification{
         postRepository.findOne(1) >> Mock(Post)
 
         when: "the add comment URL is triggered"
-        commentController.addComment(1,1,"ceci est un commentaire")
+        commentController.addComment(
+                1,1,"ceci est un commentaire")
 
         then: "the save is delegated to the commentService"
         1 * commentService.saveComment(_)
