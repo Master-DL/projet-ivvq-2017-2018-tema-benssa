@@ -109,4 +109,30 @@ class UserServiceISpec extends Specification {
         then: "an illegal Argument exception is thrown"
         thrown IllegalArgumentException
     }
+
+    def "test authenticate saved user"(){
+        given: "a login of existing user"
+        String login = initializationService.thomas.login
+        and: "a password of this user"
+        String password = initializationService.thomas.password
+
+        when: "authentication is done with the login and password"
+        boolean result = userService.authenticate(login,password)
+
+        then: "authentication succed"
+        result
+    }
+
+    def "test authenticate inexisting user"(){
+        given: "a login of inexisting user"
+        String login = "inexistingLogin"
+        and: "a password of inexisting user"
+        String password = "inexistingPassword"
+
+        when: "authentication is done with the login and password"
+        boolean result = userService.authenticate(login,password)
+
+        then: "authentication does not succed"
+        !result
+    }
 }

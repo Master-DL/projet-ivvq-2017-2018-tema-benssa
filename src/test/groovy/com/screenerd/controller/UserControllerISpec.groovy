@@ -6,8 +6,11 @@ import com.screenerd.service.InitializationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.ResponseEntity
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
+import org.springframework.web.util.UriComponents
+import org.springframework.web.util.UriComponentsBuilder
 import spock.lang.Specification
 
 
@@ -99,4 +102,31 @@ class UserControllerISpec extends Specification{
         updatedUser.avatar == [1,0,3] as byte[]
     }
 
+    def "test authentication of saved user"(){
+        given: "a login of existing user"
+        String login = initializationService.thomas.login
+        and: "a password of this user"
+        String password = initializationService.thomas.password
+
+        when: "authentication is done with this login and password"
+        Boolean result = restTemplate.getForObject("/api/v1/user/authenticate?login={login}&password={password}",
+                Boolean.class,login,password)
+
+        then: "authentication succed"
+        result
+    }
+
+    def "test authentication of unsaved user"(){
+        given: "an inexisting login"
+        String login = "inexistingLogin"
+        and: "a password "
+        String password = "password"
+
+        when: "authentication is done with this login and password"
+        Boolean result = restTemplate.getForObject("/api/v1/user/authenticate?login={login}&password={password}",
+                Boolean.class,login,password)
+
+        then: "authentication does not succed"
+        !result
+    }
 }

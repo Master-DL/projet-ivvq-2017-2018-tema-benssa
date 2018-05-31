@@ -72,4 +72,11 @@ class UserServiceSpec extends Specification {
         1 * userRepository.saveAndFlush(_)
     }
 
+    def "test delegation of authentication to the repository" (){
+        when: "a user is fetched by login and password"
+        userService.authenticate("login","password")
+
+        then: "the find user by login and password is delegated to the repository"
+        1 * userRepository.findFirstByLoginAndPassword(_,_)
+    }
 }
