@@ -5,7 +5,6 @@ import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
 import com.screenerd.repository.PostRepository;
 import com.screenerd.service.CommentService;
-import com.screenerd.service.PostService;
 import com.screenerd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
