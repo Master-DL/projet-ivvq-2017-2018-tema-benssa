@@ -39,7 +39,12 @@ public class PostController {
 
     @RequestMapping(value = "api/v1/post", method = RequestMethod.GET)
     public Page<Post> findPosts(Pageable pageable) {
-        return postService.findPosts(pageable);
+        return postService.findPage(pageable);
+    }
+
+    @RequestMapping(value = "api/v1/post/{id}", method = RequestMethod.GET)
+    public Post findPostById(@PathVariable("id") Long id) {
+        return postService.findPostById(id);
     }
 
 }

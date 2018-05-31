@@ -6,6 +6,8 @@ import com.screenerd.service.PostService
 import com.screenerd.service.UserService
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
+import org.springframework.data.domain.Pageable;
+
 
 @Transactional
 class PostControllerSpec extends Specification {
@@ -52,11 +54,11 @@ class PostControllerSpec extends Specification {
         1 * postService.findPostById(_)
     }
 
-    def "test findAllPost" () {
+    def "test findPage" () {
         when: "the request findAllPosts is sent"
-        postController.findAllPosts()
+        postController.findPosts(Mock(Pageable))
 
         then: "the request is delegated by the post service"
-        1 * postService.findAllPosts()
+        1 * postService.findPage(_)
     }
 }
