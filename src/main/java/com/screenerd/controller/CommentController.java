@@ -32,8 +32,8 @@ public class CommentController {
         return commentService.saveComment(toSave);
     }
 
-    /**@RequestMapping(value = "/api/v1/deleteComment/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/v1/deleteComment/{id}", method = RequestMethod.DELETE)
     public void deleteComment(@PathVariable("id") Long id) {
         commentService.deleteComment(id);
-    }*/
+    }
 }
