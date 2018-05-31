@@ -22,7 +22,7 @@ public class PostController {
     public Post addPost(@RequestParam(value = "idUser") Long idUser,
                         @RequestParam(value = "image") byte[] image,
                         @RequestParam(value = "imageFormat") String imageFormat,
-                        @RequestParam(value = "description") String description) throws Exception {
+                        @RequestParam(value = "description") String description) {
         User user = userService.findUser(idUser);
         if (user == null)
             throw new IllegalArgumentException("User must exists");
