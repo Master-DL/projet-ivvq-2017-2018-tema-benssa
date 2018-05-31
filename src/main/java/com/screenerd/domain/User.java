@@ -124,4 +124,9 @@ public class User {
         result = 31 * result + (avatar!=null? Arrays.hashCode(avatar):0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return id + " "+login + " "+password;
+    }
 }

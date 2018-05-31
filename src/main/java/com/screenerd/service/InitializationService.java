@@ -32,6 +32,7 @@ public class InitializationService {
     private User thomas;
     private User sarah;
     private User ben;
+    private User mark;
 
     private Post fortniteByThomas;
     private Post pesByThomas;
@@ -54,6 +55,8 @@ public class InitializationService {
         userRepository.save(sarah);
         ben = new User("benji", "rienACirer", new byte[]{2, 5, 6, 7});
         userRepository.save(ben);
+        mark = new User("markivert","passwOrdl",new byte[]{2, 5, 6, 7});
+        userRepository.save(mark);
     }
 
 
@@ -98,6 +101,10 @@ public class InitializationService {
 
     public User getBen() {
         return ben;
+    }
+
+    public User getMark() {
+        return mark;
     }
 
     public Post getFortniteByThomas() {

@@ -53,46 +53,46 @@ class UserControllerISpec extends Specification{
 
     def "test update password of user"(){
         given: "a valid saved user "
-        User thomas = initializationService.thomas
+        User mark = initializationService.mark
 
         when: "user is updated with valid password"
         MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,String>()
         map.add("password","newPassword")
-        User updatedUser = restTemplate.postForObject("/api/v1/user/update/${thomas.id}",map,User.class)
+        User updatedUser = restTemplate.postForObject("/api/v1/user/update/${mark.id}",map,User.class)
 
         then: "the updated user has the same id"
-        updatedUser.id == thomas.id
+        updatedUser.id == mark.id
         and: "the updated user has the new password"
         updatedUser.password == "newPassword"
     }
 
     def "test update avatar of user"(){
         given: "a valid saved user "
-        User thomas = initializationService.thomas
+        User mark = initializationService.mark
 
         when: "user is updated with valid avatar"
         MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,byte[]>()
         map.add("avatar",[1,0,3] as byte[])
-        User updatedUser = restTemplate.postForObject("/api/v1/user/update/${thomas.id}",map,User.class)
+        User updatedUser = restTemplate.postForObject("/api/v1/user/update/${mark.id}",map,User.class)
 
         then: "the updated user has the same id"
-        updatedUser.id == thomas.id
+        updatedUser.id == mark.id
         and: "the updated user has the new avatar"
         updatedUser.avatar == [1,0,3] as byte[]
     }
 
     def "test update password and avatar of user"(){
         given: "a valid saved user "
-        User thomas = initializationService.thomas
+        User mark = initializationService.mark
 
         when: "user is updated with valid avatar"
         MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>()
         map.add("password","newPassword")
         map.add("avatar",[1,0,3] as byte[])
-        User updatedUser = restTemplate.postForObject("/api/v1/user/update/${thomas.id}",map,User.class)
+        User updatedUser = restTemplate.postForObject("/api/v1/user/update/${mark.id}",map,User.class)
 
         then: "the updated user has the same id"
-        updatedUser.id == thomas.id
+        updatedUser.id == mark.id
         and: "the updated user has the new password"
         updatedUser.password == "newPassword"
         and: "the updated user has the new avatar"

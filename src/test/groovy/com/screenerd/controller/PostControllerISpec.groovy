@@ -56,7 +56,7 @@ class PostControllerISpec extends Specification {
         !initializationService.ben.posts.contains(saved)
     }
 
-    def "test find firs ten Posts" () {
+    def "test find first ten Posts" () {
         when: "we request the first ten posts"
         MultiValueMap<String, Integer> map = new LinkedMultiValueMap<String, Integer>()
         map.add("page", 0)
@@ -65,7 +65,10 @@ class PostControllerISpec extends Specification {
 
         then: "the result references these 4 posts "
         page.numberOfElements == 4
-
+        page.content.contains(initializationService.pesByThomas)
+        page.content.contains(initializationService.fortniteByThomas)
+        page.content.contains(initializationService.catBySarah)
+        page.content.contains(initializationService.fifaByBen)
     }
 
     def "test find  posts from 10 to 19" () {

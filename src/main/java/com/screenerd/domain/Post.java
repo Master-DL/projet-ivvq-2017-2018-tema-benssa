@@ -129,4 +129,9 @@ public class Post {
         result = 31 * result + (user!=null? user.hashCode(): 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return id + " " + description +" " + Arrays.hashCode(image) + " " +imageFormat+" "+user;
+    }
 }
