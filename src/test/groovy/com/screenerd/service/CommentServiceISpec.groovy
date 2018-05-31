@@ -35,11 +35,15 @@ class CommentServiceISpec extends Specification {
         when: "the comment is saved"
         User savedUser = userService.saveUser(user)
         Post savedPost = postService.savePost(post)
-        user.getComments().add(comment)
         Comment savedComment = commentService.saveComment(comment)
 
         then: "the comment has an id"
         comment.id != null
+        and: "the user have the comment"
+        user.getComments().contains(savedComment)
+        and: "the post have the comment"
+        post.getComments().contains(savedComment)
+
     }
 
     def "test save a non valid comment"(){
@@ -79,6 +83,10 @@ class CommentServiceISpec extends Specification {
 
         then: "the like no longer exists"
         !commentRepository.findOne(id)
+        and: "the user do not longer have the comment"
+        !user.getComments().contains(savedComment)
+        and: "the post do not longer have the comment"
+        !post.getComments().contains(savedComment)
 
     }
 }

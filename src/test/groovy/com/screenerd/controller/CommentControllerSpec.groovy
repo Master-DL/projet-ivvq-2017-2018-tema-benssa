@@ -46,4 +46,15 @@ class CommentControllerSpec extends Specification{
         1 * commentService.saveComment(_)
     }
 
+    def "test delegation of delete comment to commentService"(){
+        given: "a comment id"
+        Long commentId = 1
+
+        when: "the delete comment is triggered"
+        commentController.deleteComment(commentId)
+
+        then: "the delete is delegated to the commentService"
+        1 * commentService.deleteComment(commentId)
+    }
+
 }

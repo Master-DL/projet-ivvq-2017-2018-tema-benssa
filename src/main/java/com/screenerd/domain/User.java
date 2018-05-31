@@ -29,6 +29,7 @@ public class User {
     private byte[] avatar;
 
     @OneToMany
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany

@@ -50,8 +50,12 @@ class CommentServiceSpec extends Specification {
     def "test delegation of delete a comment to commentRepository"(){
         given: "an existing comment with id 1"
         commentRepository.findOne(1) >> Mock(Comment){
-            getUser() >> Mock(User)
-            getPost() >> Mock(Post)
+            getUser() >> Mock(User){
+                getComments() >> []
+            }
+            getPost() >> Mock(Post){
+                getComments() >> []
+            }
         }
 
         when: "the like is deleted"

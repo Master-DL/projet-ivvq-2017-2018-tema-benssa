@@ -60,11 +60,10 @@ class CommentControllerISpec extends Specification{
         commentRepository.save(comment)
 
         when: "comment is deleted"
-        restTemplate.delete("/api/v1/deleteComment/${comment.id}")
+        restTemplate.delete("/api/v1/comment/${comment.id}")
 
         then: "the comment is deleted from database"
         !commentRepository.findOne(comment.id)
-
     }
 
 }
