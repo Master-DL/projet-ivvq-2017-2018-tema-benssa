@@ -46,4 +46,18 @@ class CommentServiceSpec extends Specification {
         then: "the save is delegated to the repository"
         1 * commentRepository.save(comment)
     }
+
+    def "test delegation of delete a comment to commentRepository"(){
+        given: "an existing comment with id 1"
+        commentRepository.findOne(1) >> Mock(Comment){
+            getUser() >> Mock(User)
+            getPost() >> Mock(Post)
+        }
+
+        when: "the like is deleted"
+        commentService.deleteComment(1)
+
+        then: "the delete is delegated to the likeRepository"
+        1 * commentRepository.delete(1)
+    }
 }

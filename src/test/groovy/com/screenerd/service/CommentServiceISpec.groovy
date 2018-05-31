@@ -1,6 +1,7 @@
 package com.screenerd.service
 
 import com.screenerd.domain.Comment
+import com.screenerd.repository.CommentRepository
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,6 +21,8 @@ class CommentServiceISpec extends Specification {
     private UserService userService
     @Autowired
     private PostService postService
+    @Autowired
+    private CommentRepository commentRepository
 
     def "test save a valid comment"(){
         given: "a user"
@@ -57,5 +60,25 @@ class CommentServiceISpec extends Specification {
 
         and: "the comment has still a null id"
         comment.id == null
+    }
+
+    def "test delete a saved comment"(){
+        given: "a user"
+        User user = new User(login: "login",password: "password",avatar: [1,3,6]);
+        and: "a post"
+        Post post = new Post(user: user, description: "GG", image: [0, 0, 0, 0, 0] as byte[] , imageFormat: "png");
+        and: "a comment"
+        Comment comment = new Comment(content:"ceci est un commentaire", user: user, post: post);
+
+        when: "the like with this id is deleted"
+        User savedUser = userService.saveUser(user)
+        Post savedPost = postService.savePost(post)
+        Comment savedComment = commentService.saveComment(comment)
+        Long id = comment.getId();
+        commentService.deleteComment(id)
+
+        then: "the like no longer exists"
+        !commentRepository.findOne(id)
+
     }
 }
