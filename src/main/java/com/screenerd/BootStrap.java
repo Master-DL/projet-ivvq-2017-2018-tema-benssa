@@ -16,7 +16,7 @@ public class BootStrap {
 
     @Autowired
     private InitializationService initializationService;
-    private Logger LOGGER = Logger.getAnonymousLogger();
+    private Logger logger = Logger.getAnonymousLogger();
 
     @PostConstruct
     public void init(){
@@ -26,7 +26,7 @@ public class BootStrap {
             initializationService.initComments();
             initializationService.initLikes();
         } catch (Exception e){
-            LOGGER.log(Level.SEVERE,"bootstrap exception",e.getStackTrace());
+            logger.log(Level.SEVERE,"bootstrap exception",e.getStackTrace());
         }
     }
 }
