@@ -20,11 +20,12 @@ class UserServiceISpec extends Specification {
         User user = new User(login:  "thomas",password: "123456", avatar: [1,2,3] as byte[])
 
         when: "the user is saved"
-        userService.saveUser(user)
+        User saved = userService.saveUser(user)
 
         then: "the user has an id"
-        user.id != null
-
+        saved.id != null
+        and: "saved User is user"
+        saved == user
     }
 
     def "test save a non valid user"() {

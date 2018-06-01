@@ -32,18 +32,15 @@ class PostServiceISpec extends Specification {
         Post post = new Post(user,[0, 0, 0, 0, 0] as byte[], "test", "test");
 
         when: "the post is saved"
-        postService.savePost(post)
+        Post savedPost = postService.savePost(post)
 
         then: "the post has an id after been saved"
-        post.id != null
+        savedPost.id != null
 
-        and: "the user test has also an id"
-        user.id != null
-
-        and: "the user test has a post"
-        user.getPosts().size() == 1
-        user.getPosts().first().getDescription() == post.getDescription()
-
+        and: "the user test has the post"
+        user.posts.contains(savedPost)
+        and: "the savedPost = post"
+        savedPost == post
     }
 
     def "test a non valid post" () {
@@ -96,13 +93,9 @@ class PostServiceISpec extends Specification {
         given: "one valid User"
         User user = initializationService.ben
 
-        and: "two posts this user wrote"
+        and: "a posts this user wrote"
         Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
-        Post post2 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test2", "test2")
-
-        and: "we save the 2 posts"
         post1 = postService.savePost(post1)
-        post2 = postService.savePost(post2)
 
         when: "we delete the first post"
         postService.deletePost(post1.getId())
@@ -112,7 +105,6 @@ class PostServiceISpec extends Specification {
 
         then: "the result references 1 post"
         post == null
-
     }
 
     def "retrieve one post with its id" () {

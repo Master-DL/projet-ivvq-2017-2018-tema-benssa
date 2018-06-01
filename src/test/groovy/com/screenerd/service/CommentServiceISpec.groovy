@@ -43,6 +43,8 @@ class CommentServiceISpec extends Specification {
         user.getComments().contains(savedComment)
         and: "the post have the comment"
         post.getComments().contains(savedComment)
+        and: "the saved comment and initial comment are same"
+        comment == savedComment
 
     }
 

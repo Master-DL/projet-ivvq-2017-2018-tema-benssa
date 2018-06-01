@@ -131,8 +131,4 @@ public class Post {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return id + " " + description +" " + Arrays.hashCode(image) + " " +imageFormat+" "+user;
-    }
 }
