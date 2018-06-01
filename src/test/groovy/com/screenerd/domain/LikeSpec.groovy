@@ -1,12 +1,11 @@
 package com.screenerd.domain
 
-import com.screenerd.domain.Like
-import com.screenerd.domain.Post
-import com.screenerd.domain.User
 import spock.lang.Specification
+
 import javax.validation.Validation
 import javax.validation.Validator
 import javax.validation.ValidatorFactory
+
 /**
  * Created by telly on 06/04/18.
  */
@@ -19,9 +18,9 @@ class LikeSpec extends Specification{
         validator = factory.getValidator()
     }
 
-    def "test la validite d'un like d'un valide"(int value,User user,Post post){
+    def "la validité d'un like valide"(int value,User user,Post post){
 
-        given:"un Like correctement initialise"
+        given:"un like correctement initialisé "
         Like like = new Like(value,user,post)
 
         expect:"le like est valide"

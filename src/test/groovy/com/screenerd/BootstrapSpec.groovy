@@ -1,6 +1,6 @@
 package com.screenerd
 
-import org.springframework.boot.test.mock.mockito.MockBean
+import com.screenerd.service.InitializationService
 import spock.lang.Specification
 
 /**
@@ -9,31 +9,32 @@ import spock.lang.Specification
 
 class BootstrapSpec extends Specification {
 
-    //private Bootstrap bootstrap;
+    def "test bootstrap init method call initializationService"(){
+        given: "a bootstrap with initializationService"
+        BootStrap bootStrap = new BootStrap()
+        bootStrap.initializationService = Mock(InitializationService)
 
-    //@MockBean
-    //private InitializationService initializationService;
+        when: "the init method is triggered"
+        bootStrap.init()
 
-    def setupSpec() {
-      //  bootstrap = new Bootstrap(initializationService);
+        then: "the init methods of InitializationService are triggered"
+        1 * bootStrap.initializationService.initUsers()
+        1 * bootStrap.initializationService.initPosts()
+        1 * bootStrap.initializationService.initComments()
+        1 * bootStrap.initializationService.initLikes()
     }
 
-    def 'testInitMethodInvokeInitializationService' (){
-        given:
-        bootstrap != null
-        when:
-        bootstrap.init()
-        then:
-        verify(initializationService).initProjects();
-    }
+    def "test bootstrap init method catch Runtime Excecption coming from initializationService initUser method"(){
+        given: "a bootstrap with initializationService that throw Runtime Exception on initUsers"
+        BootStrap bootStrap = new BootStrap()
+        bootStrap.initializationService = Mock(InitializationService){
+            initUsers() >> {throw new RuntimeException()}
+        }
 
-    def 'testIniBootstrapMethodCatchRuntimeExceptionComingFromInitProjects' () {
-        given:
-        willThrow(RuntimeException.class).given(initializationService).initProjects()
-        when:
-        bootstrap.init()
-        then:
-        notThrown(Exception.class)
-    }
+        when: "the init method is triggered"
+        bootStrap.init()
 
+        then: "no exception is thrown"
+        noExceptionThrown()
+    }
 }

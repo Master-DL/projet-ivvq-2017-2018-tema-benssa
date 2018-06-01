@@ -3,7 +3,6 @@ package com.screenerd.domain
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import javax.validation.Validation
 import javax.validation.Validator
@@ -53,9 +52,33 @@ class PostSpec extends Specification {
         where:
         aUser      | aDescription | aImage                        |    aFormat
         null       | "GG"         |   [0, 0, 0, 0, 0] as byte[]   |    "png"
-        new User() | "ENCULE"     |   null                        |    "png"
+        new User() | "COMMENT"    |   null                        |    "png"
         new User() | "LOL"        |   [0, 0, 0, 0, 0] as byte[]   |    null
         new User() | null         |   [0, 0, 0, 0, 0] as byte[]   |    "png"
 
+    }
+
+    def 'test add Like' () {
+        given: "a post "
+        Post post = new Post(user: new User(), description:  "Descritpion", image:[0, 0, 0, 0, 0] as byte[], imageFormat:  "png")
+        def nb = post.likes.size()
+
+        when: "we add a Like"
+        post.addLike(new Like());
+
+        then: "list of like has one more like"
+        post.likes.size() == nb + 1
+    }
+
+    def 'test add comment' () {
+        given: "a post"
+        Post post = new Post(user: new User(), description:  "Descritpion", image:[0, 0, 0, 0, 0] as byte[], imageFormat:  "png")
+        def nb = post.comments.size()
+
+        when: "we add a comment"
+        post.addComment()
+
+        then: "list of comments has one more comment"
+        post.comments.size() == nb + 1
     }
 }
