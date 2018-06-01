@@ -2,13 +2,10 @@ package com.screenerd.domain
 
 import com.screenerd.domain.User
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import javax.validation.Validation
 import javax.validation.Validator
 import javax.validation.ValidatorFactory
-
-
 
 /**
  * Created by sara on 09/03/2018.
@@ -47,6 +44,21 @@ class UserSpec extends Specification {
 
 
     def "test the validity of user"(String login, String password, byte[] avatar) {
+
+        given: "a user initializes correctly"
+        User user = new User(login: login, password: password, avatar: avatar)
+
+        expect: "user is valide"
+        validator.validate(user).empty
+
+        where:
+        login    | password  | avatar
+        "Sara"   | "paswword"| ""
+        "Mathieu"| "Jacques" | ""
+        "Telly"  | "12345678"| ""
+
+    }
+    def "add coment"(String login, String password, byte[] avatar) {
 
         given: "a user initializes correctly"
         User user = new User(login: login, password: password, avatar: avatar)

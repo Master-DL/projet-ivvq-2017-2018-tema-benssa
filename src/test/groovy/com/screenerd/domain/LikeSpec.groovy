@@ -1,12 +1,11 @@
 package com.screenerd.domain
 
-import com.screenerd.domain.Like
-import com.screenerd.domain.Post
-import com.screenerd.domain.User
 import spock.lang.Specification
+
 import javax.validation.Validation
 import javax.validation.Validator
 import javax.validation.ValidatorFactory
+
 /**
  * Created by telly on 06/04/18.
  */

@@ -1,5 +1,8 @@
 package com.screenerd.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,10 +23,12 @@ public class Comment {
 
     @NotNull
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @NotNull
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private  Post post;
 
     public Comment(String content, User user, Post post){
@@ -62,6 +67,23 @@ public class Comment {
     public void setPost(Post post){
     	this.post = post;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        if(content != null? !content.equals(comment.content): comment.content!=null) return false;
+        if(post != null? !post.equals(comment.post): comment.post!=null) return false;
+        return user!=null? user.equals(comment.user): comment.user == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = content!=null?content.hashCode():0;
+        result = 31 * result + (post!=null? post.hashCode() :0);
+        result = 31 * result + (user!=null? user.hashCode() :0);
+        return result;
+    }
 }
 

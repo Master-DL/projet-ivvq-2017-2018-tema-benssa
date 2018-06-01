@@ -11,7 +11,7 @@ import javax.validation.Validator
 import javax.validation.ValidatorFactory
 
 
-class CommentTest extends Specification {
+class CommentSpec extends Specification {
 
     Validator validator
 
@@ -30,8 +30,8 @@ class CommentTest extends Specification {
         validator.validate(comment).empty
 
         where:
-        unContent   | unUser          | unPost
-        "commentaire"    | new User() | new Post()
+        unContent        | unUser          | unPost
+        "commentaire"    | new User()      | new Post()
 
     }
 
@@ -45,10 +45,10 @@ class CommentTest extends Specification {
         !validator.validate(comment).empty
 
         where:
-        unContent   | unUser       | unPost
-        null    | new User()   | new Post()
-        "commentaire"    | null   | new Post()
+        unContent        | unUser       | unPost
+        null             | new User()   | new Post()
+        "commentaire"    | null         | new Post()
         "commentaire"    | new User()   | null
-        "c"    | new User()   | null
+        "c"              | new User()   | null
     }
 }
