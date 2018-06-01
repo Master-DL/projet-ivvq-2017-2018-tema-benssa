@@ -42,6 +42,7 @@ class PostServiceISpec extends Specification {
         then: "the post has an id after been saved"
         post.id != null
 
+
         and: "the user test has also an id"
         user.id != null
 
