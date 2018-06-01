@@ -46,14 +46,6 @@ class PostControllerSpec extends Specification {
         1 * postService.deletePost(_)
     }
 
-    def "test findOnePost" () {
-        when: "the request findOnePost is sent"
-        postController.findPostById(1)
-
-        then: "the erquest is delegated to the post service"
-        1 * postService.findPostById(_)
-    }
-
     def "test findPage" () {
         when: "the request findAllPosts is sent"
         postController.findPosts(Mock(Pageable))

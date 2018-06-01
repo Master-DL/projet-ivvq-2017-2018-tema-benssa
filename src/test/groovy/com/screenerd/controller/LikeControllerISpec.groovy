@@ -45,11 +45,12 @@ class LikeControllerISpec extends Specification{
         then: "the like is created and has correct values"
         like.id != null
         like.value == 1
+        restTemplate.delete("/api/v1/like/${like.id}")//we delete it
     }
 
     def "test delete a like"(){
         when: "a like is deleted"
-        restTemplate.delete("/api/v1/like/${initializationService.benHatesFortnite.id}",Void.class)
+        restTemplate.delete("/api/v1/like/${initializationService.benHatesFortnite.id}")
 
         then:"the like no longer exists"
         !likeRepository.findOne(initializationService.benHatesFortnite.id)

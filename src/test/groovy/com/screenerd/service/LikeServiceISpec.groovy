@@ -4,6 +4,8 @@ import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.LikeRepository
+import com.screenerd.repository.PostRepository
+import com.screenerd.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -24,6 +26,8 @@ class LikeServiceISpec extends Specification{
     InitializationService initializationService
     @Autowired
     LikeRepository likeRepository
+    @Autowired PostRepository postRepository
+    @Autowired UserRepository userRepository
 
    def "test save a null like"(){
         when: "a null like is saved"
@@ -72,18 +76,18 @@ class LikeServiceISpec extends Specification{
 
 
     def "test delete like a saved like"(){
-        given: "a saved like Id"
-        Long likeId = initializationService.sarahLovesFortnite.id
+        given: "a saved like"
+        Like like = initializationService.sarahLovesFortnite
 
         when: "the like with this id is deleted"
-        likeService.deleteLike(likeId)
+        likeService.deleteLike(like.id)
 
         then: "the like no longer exists"
         !likeRepository.findOne(initializationService.sarahLovesFortnite.id)
         and: "the like is removed from Sarah Like"
-        !initializationService.sarah.likes.contains(initializationService.sarahLovesFortnite)
+        !userRepository.findOne(initializationService.sarah.id).likes.contains(like)
         and: "the like is removed from Fortnite Likes"
-        !initializationService.fortniteByThomas.likes.contains(initializationService.sarahLovesFortnite)
+        !postRepository.findOne(initializationService.fortniteByThomas.id).likes.contains(like)
     }
 
     def "test delete like an unsaved like"(){

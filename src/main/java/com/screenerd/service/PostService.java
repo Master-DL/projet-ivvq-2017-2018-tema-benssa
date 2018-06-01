@@ -5,6 +5,7 @@ import com.screenerd.domain.Like;
 import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
 import com.screenerd.repository.PostRepository;
+import com.screenerd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     @Autowired private PostRepository postRepository;
-    @Autowired private UserService userService;
+    @Autowired private UserRepository userRepository;
 
 
     public Post savePost(Post post) {
@@ -26,6 +27,7 @@ public class PostService {
         User author = post.getUser();
         postRepository.save(post);
         author.addPost(post);
+        userRepository.save(author);
         return post;
 
     }
@@ -35,8 +37,10 @@ public class PostService {
         if(post == null){
             throw new IllegalArgumentException("Can not delete inexisting post");
         }
-        post.getUser().getPosts().remove(post);
-        this.postRepository.delete(id);
+        User author = post.getUser();
+        author.removePost(post);
+        postRepository.delete(id);
+        userRepository.save(author);
     }
 
     public PostRepository getPostRepository() {

@@ -29,6 +29,9 @@ public class InitializationService {
     @Autowired
     private LikeRepository likeRepository;
 
+    @Autowired
+    private LikeService likeService;
+
     private User thomas;
     private User sarah;
     private User ben;
@@ -82,13 +85,13 @@ public class InitializationService {
 
     public void initLikes(){
         sarahLovesFortnite = new Like(5,sarah,fortniteByThomas);
-        likeRepository.save(sarahLovesFortnite);
+        likeService.saveLike(sarahLovesFortnite);
         benHatesFortnite = new Like(1,ben,fortniteByThomas);
-        likeRepository.save(benHatesFortnite);
-        benHatesCat = new Like(1,ben,catBySarah);
-        likeRepository.save(benHatesCat);
+        likeService.saveLike(benHatesFortnite);
+        benHatesCat = new Like(2,ben,catBySarah);
+        likeService.saveLike(benHatesCat);
         benLovesPes = new Like(4,ben,pesByThomas);
-        likeRepository.save(benLovesPes);
+        likeService.saveLike(benLovesPes);
     }
 
     public User getThomas() {

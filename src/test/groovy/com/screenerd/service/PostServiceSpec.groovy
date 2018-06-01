@@ -1,46 +1,41 @@
 package com.screenerd.service
 
-import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
+import com.screenerd.repository.UserRepository
 import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.CrudRepository
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.data.repository.PagingAndSortingRepository
 import spock.lang.Specification
 
 /**
  * Created by mathieukostiuk on 27/04/2018.
  */
 
-@Transactional
+
 class PostServiceSpec extends Specification {
 
     PostService postService
     PostRepository postRepository
-    UserService userService
-    User user
-    Post post
+    UserRepository userRepository
 
     void setup() {
         postRepository = Mock()
-        userService = Mock()
+        userRepository = Mock()
         postService = new PostService()
         postService.postRepository = postRepository
-        postService.userService = userService
+        postService.userRepository = userRepository
     }
 
     def "check the type of the repository"() {
         expect: "the repository is a Crud Repository"
-        postRepository instanceof CrudRepository
+        postRepository instanceof PagingAndSortingRepository
     }
 
     def "test save of a Post in the repository"() {
         given: "a post"
         def post = Mock(Post) {
-            getUser() >> Mock(User) {
-                getPosts() >> []
-            }
+            getUser() >> Mock(User)
         }
 
         when: "the post is saved"
@@ -59,70 +54,27 @@ class PostServiceSpec extends Specification {
     }
 
     def "test delete a post" () {
-        given: "the repo has one post"
-        post = Mock(Post) {
-            getUser() >> Mock(User) {
-                getPosts() >> Mock(ArrayList) {
-                    remove(post) >> post
-                }
-
-            }
-            getId() >> 1
+        given: "a existing post with id 1"
+        postRepository.findOne(1) >> Mock(Post){
+            getUser() >> Mock(User)
         }
-        postService.postRepository = Mock(PostRepository) {
-            findOne(1) >> post
-        }
-
-        and: "the post is saved"
-        postService.savePost(post)
-        def id = post.getId()
 
         when: "we delete the post"
-        postService.deletePost(id)
+        postService.deletePost(1)
 
         then: "the deletion is delegated to the repository"
-        1 * postService.postRepository.delete(id)
+        1 * postService.postRepository.delete(1)
     }
 
     def "get one post with its id" () {
-        given: "a post"
-        post = Mock(Post) {
-            getUser() >> Mock(User) {
-                getPosts() >> Mock(ArrayList) {
-                    remove(post) >> post
-                }
-
-            }
-            getId() >> 1
-        }
-
-        and: "the post is saved in the repo"
-        postService.savePost(post)
-        def id = post.getId()
-
-        when: "we request this post"
-        postService.findPostById(id)
+        when: "we request the post with id 1"
+        postService.findPostById(1)
 
         then: "the request is delegated to the repository"
-        1 * postService.postRepository.findOne(id)
+        1 * postService.postRepository.findOne(1)
     }
 
     def "retrieve posts ordered by popularity" () {
-        given: "a post"
-        post = Mock(Post) {
-            getUser() >> Mock(User) {
-                getPosts() >> Mock(ArrayList) {
-                    remove(post) >> post
-                }
-
-            }
-            getId() >> 1
-        }
-
-        and: "the post is saved in the repo"
-        postService.savePost(post)
-        def id = post.getId()
-
         when: "we request posts oredered by popularity"
         postService.findPageOrderedByPopularity(Mock(Pageable))
 

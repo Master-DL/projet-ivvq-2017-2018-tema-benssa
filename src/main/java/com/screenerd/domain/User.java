@@ -33,7 +33,7 @@ public class User {
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany()
     @JsonIgnore
     private List<Post> posts = new ArrayList<>();
 
@@ -108,6 +108,7 @@ public class User {
         comments.add(comment);
     }
 
+    public void removeComment(Comment comment){comments.remove(comment);}
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;

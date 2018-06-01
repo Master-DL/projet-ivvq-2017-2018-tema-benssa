@@ -3,6 +3,7 @@ package com.screenerd.service
 import com.screenerd.domain.Like
 import com.screenerd.domain.Post
 import com.screenerd.domain.User
+import com.screenerd.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.Page
@@ -24,8 +25,9 @@ class PostServiceISpec extends Specification {
     @Autowired
     InitializationService initializationService
     @Autowired
-    LikeService likeService;
-
+    LikeService likeService
+    @Autowired
+    UserRepository userRepository
 
     def "test save a valid post"() {
         given: "a user"
@@ -96,81 +98,54 @@ class PostServiceISpec extends Specification {
 
 
     def "delete one post" () {
-        given: "one valid User"
-        User user = initializationService.ben
+        given: "one valid Post"
+        Post post = initializationService.fortniteByThomas
 
-        and: "two posts this user wrote"
-        Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
-        Post post2 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test2", "test2")
-
-        and: "we save the 2 posts"
-        post1 = postService.savePost(post1)
-        post2 = postService.savePost(post2)
-
-        when: "we delete the first post"
-        postService.deletePost(post1.getId())
+        when: "we delete the post"
+        postService.deletePost(post.id)
 
         and: "requesting for the post"
-        Post post = postService.findPostById(post1.getId())
+        Post fetchedpost = postService.findPostById(post.id)
 
         then: "the result references 1 post"
-        post == null
-
+        fetchedpost == null
+        and:"the post is removed from thomas posts"
+        !initializationService.thomas.posts.contains(post)
     }
 
     def "retrieve one post with its id" () {
-        given: "one valid user"
-        User user = initializationService.ben
-
-        and: "a post this user wrote"
-        Post post1 = new Post(user,[0, 0, 0, 0, 0] as byte[], "test1", "test1")
-
-        and: "this post is saved in the repo"
-        post1 = postService.savePost(post1)
-        def id = post1.getId()
+        given: "one valid post"
+        Post post = initializationService.fortniteByThomas
 
         when: "we request this post with its id"
-        def retrivedPost = postService.findPostById(id)
+        def retrivedPost = postService.findPostById(post.id)
 
         then: "the retrievedPost is not null and has the same description"
         retrivedPost != null
-        retrivedPost.description == post1.description
+        retrivedPost.description == post.description
     }
 
     def "retrieve posts ordered by popularity" () {
-        given: "two posts"
-        def post1 = initializationService.getPesByThomas()
-        def post2 = initializationService.catBySarah
+        given: ""
+        Post p1 = postService.findPostById(initializationService.fortniteByThomas.id)
+        Post p2 = postService.findPostById(initializationService.pesByThomas.id)
+        Post p3 = postService.findPostById(initializationService.catBySarah.id)
+        Post p4 = postService.findPostById(initializationService.fifaByBen.id)
 
-        and: "three likes"
-        def like1 = new Like(1,initializationService.ben, post2)
-        def like2 = new Like(1, initializationService.ben, post2)
-        def like3 = new Like(4, initializationService.ben, post1)
-        def like4 = new Like(5, initializationService.ben, post2)
-
-        and: "we add one like with value =1"
-        likeService.saveLike(like3)
-        post1.addLike(like3)
-
-        and: "we add three like with values = 1, 1, 5"
-        likeService.saveLike(like1)
-        likeService.saveLike(like2)
-        likeService.saveLike(like4)
-        post2.addLike(like1)
-        post2.addLike(like2)
-        post2.addLike(like4)
+        expect: "posts have correct popylarity"
+        p1.popularity == 3
+        p2.popularity == 4
+        p3.popularity == 2
+        p4.popularity == 1
 
         when: "we retrieve the posts ordered by popularity"
         Pageable pageable = new PageRequest(0, 10)
         Page<Post> posts = postService.findPageOrderedByPopularity(pageable)
 
-        then: "the first post is post2"
-        println(post2.getPopularity())
-        println(post1.getPopularity())
-
-        posts.asList().get(0).getPopularity() == post1.getPopularity()
-
-        and: "the second post is post1"
-        posts.asList().get(1).id == post2.id
+        then: "the first post is post1"
+        posts.asList().get(0) == p2
+        posts.asList().get(1) == p1
+        posts.asList().get(2) == p3
+        posts.asList().get(3) == p4
     }
 }

@@ -17,11 +17,17 @@ class CommentServiceSpec extends Specification {
 
     CommentService commentService
     CommentRepository commentRepository
+    PostRepository postRepository
+    UserRepository userRepository
 
     void setup() {
         commentRepository = Mock()
+        userRepository = Mock()
+        postRepository = Mock()
         commentService = new CommentService()
         commentService.commentRepository = commentRepository
+        commentService.postRepository = postRepository
+        commentService.userRepository = userRepository
     }
 
     def "check the type of the repository"() {
@@ -33,11 +39,8 @@ class CommentServiceSpec extends Specification {
         given: "a comment"
         def comment = Mock(Comment) {
 
-            getUser() >> Mock(User){
-                getComments() >> new ArrayList<Comment>()
-            }
+            getUser() >> Mock(User)
             getPost() >> Mock(Post)
-            getContent() >> ""
         }
 
         when: "the comment is saved"
@@ -50,12 +53,8 @@ class CommentServiceSpec extends Specification {
     def "test delegation of delete a comment to commentRepository"(){
         given: "an existing comment with id 1"
         commentRepository.findOne(1) >> Mock(Comment){
-            getUser() >> Mock(User){
-                getComments() >> []
-            }
-            getPost() >> Mock(Post){
-                getComments() >> []
-            }
+            getUser() >> Mock(User)
+            getPost() >> Mock(Post)
         }
 
         when: "the like is deleted"

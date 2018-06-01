@@ -5,6 +5,7 @@ import com.screenerd.domain.Post;
 import com.screenerd.domain.User;
 import com.screenerd.repository.LikeRepository;
 import com.screenerd.repository.PostRepository;
+import com.screenerd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +19,21 @@ public class LikeService {
     LikeRepository likeRepository;
     private @Autowired
     PostRepository postRepository;
+    private  @Autowired
+    UserRepository userRepository;
 
 
     public Like saveLike(Like like){
         if(like == null){
             throw new IllegalArgumentException("Like can not be null");
         }
+        Post p = like.getPost();
         User user = like.getUser();
-        Post post = like.getPost();
         likeRepository.save(like);
+        p.addLike(like);
+        postRepository.save(p);
         user.addLike(like);
-        post.addLike(like);
-        postRepository.save(post);
+        userRepository.save(user);
         return like;
     }
 
@@ -38,8 +42,12 @@ public class LikeService {
         if(toDelete == null){
             throw new IllegalArgumentException("Can not delete inexisting like");
         }
-        toDelete.getUser().removeLike(toDelete);
-        toDelete.getPost().removeLike(toDelete);
+        User author = toDelete.getUser();
+        Post post  = toDelete.getPost();
+        author.removeLike(toDelete);
+        post.removeLike(toDelete);
         likeRepository.delete(likeId);
+        userRepository.save(author);
+        postRepository.save(post);
     }
 }

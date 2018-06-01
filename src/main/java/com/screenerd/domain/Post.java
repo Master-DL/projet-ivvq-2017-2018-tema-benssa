@@ -66,12 +66,13 @@ public class Post {
     }
 
     public void removeLike(Like like){
-        likes.remove(like);
+        System.out.println(likes.remove(like));
     }
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
+    public void removeComment(Comment comment){comments.remove(comment);}
     public User getUser() {
         return this.user;
     }

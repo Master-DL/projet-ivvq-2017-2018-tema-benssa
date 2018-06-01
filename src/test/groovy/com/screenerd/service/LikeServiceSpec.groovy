@@ -5,6 +5,7 @@ import com.screenerd.domain.Post
 import com.screenerd.domain.User
 import com.screenerd.repository.LikeRepository
 import com.screenerd.repository.PostRepository
+import com.screenerd.repository.UserRepository
 import org.springframework.data.repository.CrudRepository
 import spock.lang.Specification
 
@@ -16,14 +17,18 @@ import spock.lang.Specification
 class LikeServiceSpec extends Specification{
 
     LikeRepository likeRepository
+    PostRepository postRepository
+    UserRepository userRepository
     LikeService likeService
 
-
     def setup(){
-        likeRepository = Mock() {}
+        likeRepository = Mock()
+        postRepository = Mock()
+        userRepository = Mock()
         likeService = new LikeService()
-        likeService.postRepository = Mock(PostRepository)
+        likeService.postRepository = postRepository
         likeService.likeRepository = likeRepository
+        likeService.userRepository = userRepository
     }
 
     def "check type of likeRepositry"(){

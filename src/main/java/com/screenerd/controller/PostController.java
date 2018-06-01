@@ -43,11 +43,6 @@ public class PostController {
         return postService.findPage(pageable);
     }
 
-    @RequestMapping(value = "api/v1/post/{id}", method = RequestMethod.GET)
-    public Post findPostById(@PathVariable("id") Long id) {
-        return postService.findPostById(id);
-    }
-
     @RequestMapping(value = "api/v1/post/popularity", method = RequestMethod.GET)
     public Page<Post> findPostsOrderedByPopularity(Pageable p) {
         return postService.findPageOrderedByPopularity(p);

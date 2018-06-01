@@ -6,7 +6,6 @@ import com.screenerd.domain.User
 import com.screenerd.repository.PostRepository
 import com.screenerd.service.InitializationService
 import com.screenerd.service.PostService
-import com.screenerd.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -14,7 +13,6 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import spock.lang.Specification
 
-import javax.transaction.Transactional
 
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostControllerISpec extends Specification {
@@ -25,6 +23,8 @@ class PostControllerISpec extends Specification {
     private InitializationService initializationService
     @Autowired
     private PostRepository postRepository
+    @Autowired
+    private PostService postService
 
 
     def "test add a valid post" () {
@@ -41,7 +41,7 @@ class PostControllerISpec extends Specification {
 
         then: "the post is created"
         post.id != null
-        postRepository.delete(post.id)//we delete it because testrestTemplate does not rollback transaction
+        restTemplate.delete("/api/v1/post/${post.id}")
     }
 
     def "test delete post"(){
