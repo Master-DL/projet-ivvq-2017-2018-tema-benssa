@@ -2,6 +2,8 @@ package com.screenerd.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -43,6 +45,8 @@ public class Post {
 
     @OneToMany
     @JsonIgnore
+    @NotFound(
+            action = NotFoundAction.IGNORE)
     private  List<Like> likes = new ArrayList<>();
 
     @NotNull
