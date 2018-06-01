@@ -60,14 +60,16 @@ class LikeServiceISpec extends Specification{
         Like like = new Like(2,sarah,pesByThomas)
 
         when: "the like is saved"
-        likeService.saveLike(like)
+        Like savedLike = likeService.saveLike(like)
 
-        then: "the like has an id"
-        like.id != null
+        then: "the saved like has an id"
+        savedLike.id != null
         and: "the user contains the like"
-        sarah.likes.contains(like)
+        sarah.likes.contains(savedLike)
         and: "the post contains the like"
-        pesByThomas.likes.contains(like)
+        pesByThomas.likes.contains(savedLike)
+        and: "the two likes are same"
+        savedLike == like
     }
 
 
